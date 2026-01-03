@@ -81,6 +81,31 @@ function academia_theme_setup() {
 add_action('after_setup_theme', 'academia_theme_setup');
 
 /**
+ * Add Customizer settings for Hero Section
+ */
+function academia_customize_register($wp_customize) {
+    // Add Hero Section
+    $wp_customize->add_section('academia_hero_section', array(
+        'title'    => __('Sección Hero', 'academia-pro'),
+        'priority' => 30,
+    ));
+
+    // Hero Image Setting
+    $wp_customize->add_setting('academia_hero_image', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'academia_hero_image', array(
+        'label'    => __('Imagen del Hero', 'academia-pro'),
+        'section'  => 'academia_hero_section',
+        'settings' => 'academia_hero_image',
+        'description' => __('Sube la imagen que aparecerá en la sección principal (recomendado .png o .svg transparente).', 'academia-pro'),
+    )));
+}
+add_action('customize_register', 'academia_customize_register');
+
+/**
  * Register widget areas
  */
 function academia_widgets_init() {

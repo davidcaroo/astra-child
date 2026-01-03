@@ -60,7 +60,14 @@
             
             <div class="hero-image animate-on-scroll slide-in-right">
                 <div class="hero-image-wrapper">
-                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/hero-illustration.svg" alt="Estudiante aprendiendo online" class="hero-img">
+                    <?php 
+                    $hero_image = get_theme_mod('academia_hero_image');
+                    if (empty($hero_image)) {
+                        $hero_image = get_stylesheet_directory_uri() . '/assets/images/hero-illustration.svg';
+                    }
+                    ?>
+                    <img src="<?php echo esc_url($hero_image); ?>" alt="Estudiante aprendiendo online" class="hero-img">
+
                     
                     <!-- Floating Cards -->
                     <div class="floating-card card-1">
