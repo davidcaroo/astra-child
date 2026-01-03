@@ -18,25 +18,33 @@
                     #1 en Emprendimiento Digital
                 </span>
                 
+                <?php 
+                $hero_title = get_theme_mod('academia_hero_title', 'Emprende Sin Límites y Alcanza Tu Máximo Potencial');
+                $hero_description = get_theme_mod('academia_hero_description', 'Aprende de expertos y domina las habilidades más demandadas en marketing digital, emprendimiento y ventas. Transforma tu idea en un negocio exitoso sin barreras.');
+                $primary_btn_text = get_theme_mod('academia_hero_primary_btn_text', 'Explorar Cursos');
+                $primary_btn_link = get_theme_mod('academia_hero_primary_btn_link', 'https://emprendesinlimites.co/resumen-cursos/');
+                $secondary_btn_text = get_theme_mod('academia_hero_secondary_btn_text', 'Ver Demo Gratis');
+                $secondary_btn_link = get_theme_mod('academia_hero_secondary_btn_link', '#demo');
+
+                $display_title = str_replace('Sin Límites', '<span class="gradient-text">Sin Límites</span>', esc_html($hero_title));
+                ?>
                 <h1 class="hero-title">
-                    Emprende 
-                    <span class="gradient-text">Sin Límites</span> 
-                    y Alcanza Tu Máximo Potencial
+                    <?php echo $display_title; ?>
                 </h1>
                 
                 <p class="hero-description">
-                    Aprende de expertos y domina las habilidades más demandadas en marketing digital, emprendimiento y ventas. Transforma tu idea en un negocio exitoso sin barreras.
+                    <?php echo esc_html($hero_description); ?>
                 </p>
                 
                 <div class="hero-cta">
-                    <a href="#cursos" class="btn btn-primary btn-lg">
-                        Explorar Cursos
+                    <a href="<?php echo esc_url($primary_btn_link); ?>" class="btn btn-primary btn-lg">
+                        <?php echo esc_html($primary_btn_text); ?>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                     </a>
-                    <a href="#demo" class="btn btn-secondary btn-lg">
-                        Ver Demo Gratis
+                    <a href="<?php echo esc_url($secondary_btn_link); ?>" class="btn btn-secondary btn-lg">
+                        <?php echo esc_html($secondary_btn_text); ?>
                     </a>
                 </div>
                 

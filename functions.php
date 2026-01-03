@@ -90,18 +90,119 @@ function academia_customize_register($wp_customize) {
         'priority' => 30,
     ));
 
-    // Hero Image Setting
-    $wp_customize->add_setting('academia_hero_image', array(
-        'default'           => '',
+    // Hero Title
+    $wp_customize->add_setting('academia_hero_title', array(
+        'default'           => 'Emprende Sin Límites y Alcanza Tu Máximo Potencial',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_hero_title', array(
+        'label'    => __('Título del Hero', 'academia-pro'),
+        'section'  => 'academia_hero_section',
+        'type'     => 'text',
+    ));
+
+    // Hero Description
+    $wp_customize->add_setting('academia_hero_description', array(
+        'default'           => 'Aprende de expertos y domina las habilidades más demandadas en marketing digital, emprendimiento y ventas. Transforma tu idea en un negocio exitoso sin barreras.',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+
+    $wp_customize->add_control('academia_hero_description', array(
+        'label'    => __('Descripción del Hero', 'academia-pro'),
+        'section'  => 'academia_hero_section',
+        'type'     => 'textarea',
+    ));
+
+    // Hero Primary Button Text
+    $wp_customize->add_setting('academia_hero_primary_btn_text', array(
+        'default'           => 'Explorar Cursos',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_hero_primary_btn_text', array(
+        'label'    => __('Texto Botón Primario', 'academia-pro'),
+        'section'  => 'academia_hero_section',
+        'type'     => 'text',
+    ));
+
+    // Hero Primary Button Link
+    $wp_customize->add_setting('academia_hero_primary_btn_link', array(
+        'default'           => 'https://emprendesinlimites.co/resumen-cursos/',
         'sanitize_callback' => 'esc_url_raw',
     ));
 
-    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'academia_hero_image', array(
-        'label'    => __('Imagen del Hero', 'academia-pro'),
+    $wp_customize->add_control('academia_hero_primary_btn_link', array(
+        'label'    => __('Link Botón Primario', 'academia-pro'),
         'section'  => 'academia_hero_section',
-        'settings' => 'academia_hero_image',
-        'description' => __('Sube la imagen que aparecerá en la sección principal (recomendado .png o .svg transparente).', 'academia-pro'),
-    )));
+        'type'     => 'url',
+    ));
+
+    // Hero Secondary Button Text
+    $wp_customize->add_setting('academia_hero_secondary_btn_text', array(
+        'default'           => 'Ver Demo Gratis',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_hero_secondary_btn_text', array(
+        'label'    => __('Texto Botón Secundario', 'academia-pro'),
+        'section'  => 'academia_hero_section',
+        'type'     => 'text',
+    ));
+
+    // Hero Secondary Button Link
+    $wp_customize->add_setting('academia_hero_secondary_btn_link', array(
+        'default'           => '#demo',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('academia_hero_secondary_btn_link', array(
+        'label'    => __('Link Botón Secundario', 'academia-pro'),
+        'section'  => 'academia_hero_section',
+        'type'     => 'url',
+    ));
+
+    // --- CTA Section ---
+    $wp_customize->add_section('academia_cta_section', array(
+        'title'    => __('Sección CTA (Final)', 'academia-pro'),
+        'priority' => 35,
+    ));
+
+    // CTA Title
+    $wp_customize->add_setting('academia_cta_title', array(
+        'default'           => 'Comienza Tu Transformación Profesional Hoy',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_cta_title', array(
+        'label'    => __('Título CTA', 'academia-pro'),
+        'section'  => 'academia_cta_section',
+        'type'     => 'text',
+    ));
+
+    // CTA Primary Button Text
+    $wp_customize->add_setting('academia_cta_primary_btn_text', array(
+        'default'           => 'Inscríbete Ahora',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_cta_primary_btn_text', array(
+        'label'    => __('Texto Botón Primario', 'academia-pro'),
+        'section'  => 'academia_cta_section',
+        'type'     => 'text',
+    ));
+
+    // CTA Primary Button Link
+    $wp_customize->add_setting('academia_cta_primary_btn_link', array(
+        'default'           => 'https://emprendesinlimites.co/resumen-cursos/',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('academia_cta_primary_btn_link', array(
+        'label'    => __('Link Botón Primario', 'academia-pro'),
+        'section'  => 'academia_cta_section',
+        'type'     => 'url',
+    ));
 }
 add_action('customize_register', 'academia_customize_register');
 

@@ -16,8 +16,13 @@
                 Oferta Especial
             </div>
             
+            <?php 
+            $cta_title = get_theme_mod('academia_cta_title', 'Comienza Tu Transformación Profesional Hoy');
+            $cta_btn_text = get_theme_mod('academia_cta_primary_btn_text', 'Inscríbete Ahora');
+            $cta_btn_link = get_theme_mod('academia_cta_primary_btn_link', 'https://emprendesinlimites.co/resumen-cursos/');
+            ?>
             <h2 class="cta-title">
-                Comienza Tu Transformación Profesional Hoy
+                <?php echo esc_html($cta_title); ?>
             </h2>
             
             <p class="cta-description">
@@ -46,13 +51,13 @@
             </div>
             
             <div class="cta-actions">
-                <a href="#" class="btn btn-accent btn-lg">
-                    Inscríbete Ahora
+                <a href="<?php echo esc_url($cta_btn_link); ?>" class="btn btn-accent btn-lg">
+                    <?php echo esc_html($cta_btn_text); ?>
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </svg>
                 </a>
-                <a href="#" class="btn btn-secondary btn-lg">
+                <a href="#planes" class="btn btn-secondary btn-lg">
                     Ver Planes
                 </a>
             </div>
