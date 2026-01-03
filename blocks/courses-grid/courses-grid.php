@@ -1,205 +1,172 @@
-<!-- 
-  Courses Grid Block - Display courses in modern card grid
--->
-<section class="courses-section section" id="cursos">
+<?php
+/**
+ * Courses Grid Block
+ * Displays courses from Sensei LMS
+ */
+
+// Get courses from Sensei if active, otherwise show fallback
+$courses_query = null;
+$has_sensei = function_exists('esl_is_sensei_active') && esl_is_sensei_active();
+
+if ($has_sensei) {
+    // Get courses from Sensei
+    $courses_query = esl_get_sensei_courses(array(
+        'posts_per_page' => 6,
+        'orderby' => 'date',
+        'order' => 'DESC',
+    ));
+    
+    // Get course categories for filtering
+    $categories = get_terms(array(
+        'taxonomy' => 'course-category',
+        'hide_empty' => true,
+    ));
+} else {
+    $categories = array();
+}
+?>
+
+<section class="courses-section section-lg">
     <div class="container">
-        <div class="section-header text-center animate-on-scroll fade-in">
+        <div class="section-header text-center">
             <span class="section-badge">Nuestros Cursos</span>
-            <h2 class="section-title">Explora Nuestra Oferta Educativa</h2>
+            <h2 class="section-title">Aprende con los Mejores Cursos</h2>
             <p class="section-description">
-                Cursos diseñados por expertos para llevarte del nivel básico al avanzado en marketing, ventas y emprendimiento
+                Descubre nuestra selección de cursos diseñados para impulsar tu carrera en marketing, ventas y emprendimiento.
             </p>
         </div>
-        
-        <div class="courses-filter">
-            <button class="filter-btn active" data-filter="all">Todos</button>
-            <button class="filter-btn" data-filter="marketing">Marketing</button>
-            <button class="filter-btn" data-filter="ventas">Ventas</button>
-            <button class="filter-btn" data-filter="emprendimiento">Emprendimiento</button>
+
+        <!-- Category Filters -->
+        <?php if ($has_sensei && !empty($categories) && !is_wp_error($categories)) : ?>
+        <div class="courses-filters">
+            <button class="filter-btn active" data-category="all">Todos</button>
+            <?php foreach ($categories as $category) : ?>
+                <button class="filter-btn" data-category="<?php echo esc_attr($category->slug); ?>">
+                    <?php echo esc_html($category->name); ?>
+                </button>
+            <?php endforeach; ?>
         </div>
-        
+        <?php endif; ?>
+
+        <!-- Courses Grid -->
         <div class="courses-grid">
-            <!-- Course Card 1 -->
-            <div class="course-card animate-on-scroll fade-in" data-category="marketing">
-                <div class="course-image">
-                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/course-1.jpg" alt="Marketing Digital Avanzado">
-                    <div class="course-badge">Bestseller</div>
-                    <div class="course-level">Avanzado</div>
+            <?php if ($has_sensei && $courses_query && $courses_query->have_posts()) : ?>
+                <?php while ($courses_query->have_posts()) : $courses_query->the_post(); ?>
+                    <?php
+                    $course_id = get_the_ID();
+                    $course_data = esl_get_formatted_course_data($course_id);
+                    
+                    // Get category slugs for filtering
+                    $category_slugs = array();
+                    if (!empty($course_data['categories']) && !is_wp_error($course_data['categories'])) {
+                        foreach ($course_data['categories'] as $cat) {
+                            $category_slugs[] = $cat->slug;
+                        }
+                    }
+                    $category_attr = !empty($category_slugs) ? implode(' ', $category_slugs) : 'uncategorized';
+                    ?>
+                    
+                    <div class="course-card" data-category="<?php echo esc_attr($category_attr); ?>">
+                        <div class="course-image">
+                            <?php if (!empty($course_data['thumbnail'])) : ?>
+                                <img src="<?php echo esc_url($course_data['thumbnail']); ?>" alt="<?php echo esc_attr($course_data['title']); ?>">
+                            <?php else : ?>
+                                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/course-placeholder.jpg" alt="<?php echo esc_attr($course_data['title']); ?>">
+                            <?php endif; ?>
+                            
+                            <?php if ($course_data['is_enrolled']) : ?>
+                                <span class="course-badge badge-enrolled">Inscrito</span>
+                            <?php elseif ($course_data['has_certificate']) : ?>
+                                <span class="course-badge badge-certificate">Con Certificado</span>
+                            <?php endif; ?>
+                            
+                            <span class="course-level"><?php echo esc_html($course_data['difficulty']); ?></span>
+                        </div>
+                        
+                        <div class="course-content">
+                            <div class="course-meta">
+                                <?php if (!empty($course_data['categories']) && !is_wp_error($course_data['categories'])) : ?>
+                                    <span class="course-category">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                            <path d="M2 4L8 2L14 4V8C14 11.5 11 14 8 14C5 14 2 11.5 2 8V4Z"/>
+                                        </svg>
+                                        <?php echo esc_html($course_data['categories'][0]->name); ?>
+                                    </span>
+                                <?php endif; ?>
+                                
+                                <?php if ($course_data['rating'] > 0) : ?>
+                                    <span class="course-rating">
+                                        <span class="stars">★</span>
+                                        <?php echo esc_html($course_data['rating']); ?>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <h3 class="course-title">
+                                <a href="<?php echo esc_url($course_data['permalink']); ?>">
+                                    <?php echo esc_html($course_data['title']); ?>
+                                </a>
+                            </h3>
+                            
+                            <p class="course-excerpt">
+                                <?php echo esc_html(wp_trim_words($course_data['excerpt'], 15)); ?>
+                            </p>
+                            
+                            <div class="course-info">
+                                <div class="info-item">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                                        <path d="M8 4V8L11 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                                    </svg>
+                                    <span><?php echo esc_html($course_data['duration']); ?></span>
+                                </div>
+                                <div class="info-item">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M8 8a3 3 0 100-6 3 3 0 000 6zm0 1c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                    <span><?php echo esc_html($course_data['students']); ?> estudiantes</span>
+                                </div>
+                                <?php if ($course_data['has_certificate']) : ?>
+                                    <div class="info-item">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                            <path d="M4 0a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V2a2 2 0 00-2-2H4zm0 1h8a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V2a1 1 0 011-1z"/>
+                                        </svg>
+                                        <span>Certificado</span>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <div class="course-footer">
+                                <div class="course-price"><?php echo wp_kses_post($course_data['price']); ?></div>
+                                <a href="<?php echo esc_url($course_data['enrollment_url']); ?>" class="btn btn-primary">
+                                    <?php echo $course_data['is_enrolled'] ? 'Continuar' : 'Ver Curso'; ?>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+                <?php wp_reset_postdata(); ?>
+            <?php elseif ($has_sensei) : ?>
+                <!-- No courses found -->
+                <div class="no-courses">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                        <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2"/>
+                        <path d="M32 20v16M32 44h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <h3>No hay cursos disponibles</h3>
+                    <p>Pronto agregaremos nuevos cursos. ¡Mantente atento!</p>
                 </div>
-                <div class="course-content">
-                    <div class="course-meta">
-                        <span class="course-category">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M2 4L8 2L14 4V8C14 11.5 11 14 8 14C5 14 2 11.5 2 8V4Z" stroke="currentColor" stroke-width="1.5"/>
-                            </svg>
-                            Marketing Digital
-                        </span>
-                        <span class="course-rating">
-                            ⭐ 4.9 (2,340)
-                        </span>
-                    </div>
-                    
-                    <h3 class="course-title">Marketing Digital Avanzado 2024</h3>
-                    <p class="course-description">
-                        Domina las estrategias más efectivas de marketing digital, desde SEO hasta campañas pagadas en redes sociales.
-                    </p>
-                    
-                    <div class="course-info">
-                        <div class="info-item">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M8 4V8L11 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                            </svg>
-                            <span>42 horas</span>
-                        </div>
-                        <div class="info-item">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M8 2L10 6L14 7L11 10L12 14L8 12L4 14L5 10L2 7L6 6L8 2Z" stroke="currentColor" stroke-width="1.5"/>
-                            </svg>
-                            <span>Certificado</span>
-                        </div>
-                        <div class="info-item">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M5 8C6.10457 8 7 7.10457 7 6C7 4.89543 6.10457 4 5 4C3.89543 4 3 4.89543 3 6C3 7.10457 3.89543 8 5 8Z" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M11 8C12.1046 8 13 7.10457 13 6C13 4.89543 12.1046 4 11 4C9.89543 4 9 4.89543 9 6C9 7.10457 9.89543 8 11 8Z" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M1 13C1 11 3 10 5 10C7 10 9 11 9 13" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M7 13C7 11 9 10 11 10C13 10 15 11 15 13" stroke="currentColor" stroke-width="1.5"/>
-                            </svg>
-                            <span>3,450 estudiantes</span>
-                        </div>
-                    </div>
-                    
-                    <div class="course-footer">
-                        <div class="course-price">
-                            <span class="price-old">$299</span>
-                            <span class="price-current">$199</span>
-                        </div>
-                        <a href="#" class="btn btn-primary">Ver Curso</a>
-                    </div>
+            <?php else : ?>
+                <!-- Sensei not active - Fallback -->
+                <div class="no-courses">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                        <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2"/>
+                        <path d="M32 20v16M32 44h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <h3>Sensei LMS no está activo</h3>
+                    <p>Por favor, instala y activa el plugin Sensei LMS para mostrar los cursos.</p>
                 </div>
-            </div>
-            
-            <!-- Course Card 2 -->
-            <div class="course-card animate-on-scroll fade-in" data-category="ventas">
-                <div class="course-image">
-                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/course-2.jpg" alt="Ventas B2B">
-                    <div class="course-badge new">Nuevo</div>
-                    <div class="course-level">Intermedio</div>
-                </div>
-                <div class="course-content">
-                    <div class="course-meta">
-                        <span class="course-category">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M2 4L8 2L14 4V8C14 11.5 11 14 8 14C5 14 2 11.5 2 8V4Z" stroke="currentColor" stroke-width="1.5"/>
-                            </svg>
-                            Ventas
-                        </span>
-                        <span class="course-rating">
-                            ⭐ 5.0 (890)
-                        </span>
-                    </div>
-                    
-                    <h3 class="course-title">Estrategias de Ventas B2B</h3>
-                    <p class="course-description">
-                        Aprende técnicas probadas para cerrar ventas complejas y construir relaciones duraderas con clientes corporativos.
-                    </p>
-                    
-                    <div class="course-info">
-                        <div class="info-item">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M8 4V8L11 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                            </svg>
-                            <span>28 horas</span>
-                        </div>
-                        <div class="info-item">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M8 2L10 6L14 7L11 10L12 14L8 12L4 14L5 10L2 7L6 6L8 2Z" stroke="currentColor" stroke-width="1.5"/>
-                            </svg>
-                            <span>Certificado</span>
-                        </div>
-                        <div class="info-item">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M5 8C6.10457 8 7 7.10457 7 6C7 4.89543 6.10457 4 5 4C3.89543 4 3 4.89543 3 6C3 7.10457 3.89543 8 5 8Z" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M11 8C12.1046 8 13 7.10457 13 6C13 4.89543 12.1046 4 11 4C9.89543 4 9 4.89543 9 6C9 7.10457 9.89543 8 11 8Z" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M1 13C1 11 3 10 5 10C7 10 9 11 9 13" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M7 13C7 11 9 10 11 10C13 10 15 11 15 13" stroke="currentColor" stroke-width="1.5"/>
-                            </svg>
-                            <span>1,890 estudiantes</span>
-                        </div>
-                    </div>
-                    
-                    <div class="course-footer">
-                        <div class="course-price">
-                            <span class="price-current">$179</span>
-                        </div>
-                        <a href="#" class="btn btn-primary">Ver Curso</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Course Card 3 -->
-            <div class="course-card animate-on-scroll fade-in" data-category="emprendimiento">
-                <div class="course-image">
-                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/course-3.jpg" alt="Emprendimiento Digital">
-                    <div class="course-level">Principiante</div>
-                </div>
-                <div class="course-content">
-                    <div class="course-meta">
-                        <span class="course-category">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M2 4L8 2L14 4V8C14 11.5 11 14 8 14C5 14 2 11.5 2 8V4Z" stroke="currentColor" stroke-width="1.5"/>
-                            </svg>
-                            Emprendimiento
-                        </span>
-                        <span class="course-rating">
-                            ⭐ 4.8 (1,560)
-                        </span>
-                    </div>
-                    
-                    <h3 class="course-title">Emprendimiento Digital desde Cero</h3>
-                    <p class="course-description">
-                        Construye y lanza tu negocio digital con estrategias probadas, desde la idea hasta la primera venta.
-                    </p>
-                    
-                    <div class="course-info">
-                        <div class="info-item">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M8 4V8L11 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                            </svg>
-                            <span>35 horas</span>
-                        </div>
-                        <div class="info-item">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M8 2L10 6L14 7L11 10L12 14L8 12L4 14L5 10L2 7L6 6L8 2Z" stroke="currentColor" stroke-width="1.5"/>
-                            </svg>
-                            <span>Certificado</span>
-                        </div>
-                        <div class="info-item">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M5 8C6.10457 8 7 7.10457 7 6C7 4.89543 6.10457 4 5 4C3.89543 4 3 4.89543 3 6C3 7.10457 3.89543 8 5 8Z" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M11 8C12.1046 8 13 7.10457 13 6C13 4.89543 12.1046 4 11 4C9.89543 4 9 4.89543 9 6C9 7.10457 9.89543 8 11 8Z" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M1 13C1 11 3 10 5 10C7 10 9 11 9 13" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M7 13C7 11 9 10 11 10C13 10 15 11 15 13" stroke="currentColor" stroke-width="1.5"/>
-                            </svg>
-                            <span>2,780 estudiantes</span>
-                        </div>
-                    </div>
-                    
-                    <div class="course-footer">
-                        <div class="course-price">
-                            <span class="price-old">$249</span>
-                            <span class="price-current">$149</span>
-                        </div>
-                        <a href="#" class="btn btn-primary">Ver Curso</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="text-center mt-4">
-            <a href="#" class="btn btn-secondary btn-lg">Ver Todos los Cursos</a>
+            <?php endif; ?>
         </div>
     </div>
 </section>
@@ -236,7 +203,7 @@
     color: var(--color-gray-600);
 }
 
-.courses-filter {
+.courses-filters {
     display: flex;
     justify-content: center;
     gap: var(--spacing-md);
@@ -317,8 +284,12 @@
     letter-spacing: 0.5px;
 }
 
-.course-badge.new {
+.badge-enrolled {
     background: var(--color-success);
+}
+
+.badge-certificate {
+    background: var(--gradient-primary);
 }
 
 .course-level {
@@ -355,8 +326,15 @@
 }
 
 .course-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     font-size: var(--font-size-sm);
     color: var(--color-gray-600);
+}
+
+.course-rating .stars {
+    color: #FFB300;
 }
 
 .course-title {
@@ -367,7 +345,17 @@
     line-height: 1.3;
 }
 
-.course-description {
+.course-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--transition-base);
+}
+
+.course-title a:hover {
+    color: var(--color-primary);
+}
+
+.course-excerpt {
     color: var(--color-gray-600);
     font-size: var(--font-size-sm);
     line-height: 1.6;
@@ -394,6 +382,7 @@
 
 .info-item svg {
     color: var(--color-primary);
+    flex-shrink: 0;
 }
 
 .course-footer {
@@ -403,21 +392,32 @@
 }
 
 .course-price {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.price-old {
-    font-size: var(--font-size-base);
-    color: var(--color-gray-400);
-    text-decoration: line-through;
-}
-
-.price-current {
     font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-extrabold);
     color: var(--color-primary);
+}
+
+/* No courses message */
+.no-courses {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--spacing-4xl) var(--spacing-xl);
+}
+
+.no-courses svg {
+    color: var(--color-gray-400);
+    margin-bottom: var(--spacing-xl);
+}
+
+.no-courses h3 {
+    font-size: var(--font-size-2xl);
+    color: var(--color-gray-900);
+    margin-bottom: var(--spacing-md);
+}
+
+.no-courses p {
+    font-size: var(--font-size-lg);
+    color: var(--color-gray-600);
 }
 
 @media (max-width: 768px) {
@@ -445,7 +445,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            const filter = this.getAttribute('data-filter');
+            const category = this.getAttribute('data-category');
             
             // Update active button
             filterBtns.forEach(b => b.classList.remove('active'));
@@ -453,7 +453,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Filter courses
             courseCards.forEach(card => {
-                if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                const cardCategories = card.getAttribute('data-category');
+                
+                if (category === 'all' || cardCategories.includes(category)) {
                     card.style.display = 'block';
                 } else {
                     card.style.display = 'none';

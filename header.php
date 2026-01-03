@@ -39,8 +39,24 @@
             
             <!-- Actions - Right -->
             <div class="header-actions">
-                <a href="#login" class="btn-login">Iniciar Sesión</a>
-                <a href="#registro" class="btn btn-primary">Registrarse</a>
+                <?php if (is_user_logged_in()) : ?>
+                    <?php $current_user = wp_get_current_user(); ?>
+                    <a href="<?php echo esc_url(get_permalink(get_option('woocommerce_myaccount_page_id'))); ?>" class="user-account">
+                        <?php echo get_avatar($current_user->ID, 32, '', '', array('class' => 'user-avatar')); ?>
+                        <span class="user-name"><?php echo esc_html($current_user->display_name); ?></span>
+                    </a>
+                    <?php if (function_exists('esl_is_sensei_active') && esl_is_sensei_active()) : ?>
+                        <a href="<?php echo esc_url(get_permalink(Sensei()->settings->get('my_course_page'))); ?>" class="btn-login">
+                            Mis Cursos
+                        </a>
+                    <?php endif; ?>
+                    <a href="<?php echo esc_url(wp_logout_url(home_url())); ?>" class="btn-login">
+                        Cerrar Sesión
+                    </a>
+                <?php else : ?>
+                    <a href="<?php echo esc_url(wp_login_url(get_permalink())); ?>" class="btn-login">Iniciar Sesión</a>
+                    <a href="<?php echo esc_url(wp_registration_url()); ?>" class="btn btn-primary">Registrarse</a>
+                <?php endif; ?>
             </div>
             
             <!-- Mobile Menu Toggle -->
@@ -75,8 +91,15 @@
             ?>
         </nav>
         <div class="mobile-menu-actions">
-            <a href="#login" class="btn btn-secondary btn-block">Iniciar Sesión</a>
-            <a href="#registro" class="btn btn-primary btn-block">Registrarse</a>
+            <?php if (is_user_logged_in()) : ?>
+                <?php if (function_exists('esl_is_sensei_active') && esl_is_sensei_active()) : ?>
+                    <a href="<?php echo esc_url(get_permalink(Sensei()->settings->get('my_course_page'))); ?>" class="btn btn-secondary btn-block">Mis Cursos</a>
+                <?php endif; ?>
+                <a href="<?php echo esc_url(wp_logout_url(home_url())); ?>" class="btn btn-secondary btn-block">Cerrar Sesión</a>
+            <?php else : ?>
+                <a href="<?php echo esc_url(wp_login_url(get_permalink())); ?>" class="btn btn-secondary btn-block">Iniciar Sesión</a>
+                <a href="<?php echo esc_url(wp_registration_url()); ?>" class="btn btn-primary btn-block">Registrarse</a>
+            <?php endif; ?>
         </div>
     </div>
 </div>
@@ -236,6 +259,34 @@
 .btn-login:hover {
     color: var(--color-primary);
     background: var(--color-gray-50);
+}
+
+.user-account {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.user-account:hover {
+    background: var(--color-gray-50);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-name {
+    color: var(--color-gray-700);
+    font-family: var(--font-primary);
+    font-size: 15px;
+    font-weight: 600;
 }
 
 .btn-block {

@@ -159,3 +159,231 @@ add_filter('body_class', 'academia_body_classes');
 if (file_exists(ACADEMIA_THEME_DIR . '/inc/sensei-integration.php')) {
     require_once ACADEMIA_THEME_DIR . '/inc/sensei-integration.php';
 }
+
+/**
+ * Shortcode: Display Sensei Courses
+ * Usage: [esl_courses count="3" category="marketing" orderby="date" columns="3"]
+ */
+function esl_courses_shortcode($atts) {
+    // Parse attributes
+    $atts = shortcode_atts(array(
+        'count' => 6,
+        'category' => '',
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'columns' => 3,
+    ), $atts, 'esl_courses');
+    
+    // Check if Sensei is active
+    if (!function_exists('esl_is_sensei_active') || !esl_is_sensei_active()) {
+        return '<p class="esl-notice">Sensei LMS no está activo. Por favor, instala y activa el plugin.</p>';
+    }
+    
+    // Build query args
+    $query_args = array(
+        'posts_per_page' => intval($atts['count']),
+        'orderby' => sanitize_text_field($atts['orderby']),
+        'order' => sanitize_text_field($atts['order']),
+    );
+    
+    // Add category filter if specified
+    if (!empty($atts['category'])) {
+        $query_args['tax_query'] = array(
+            array(
+                'taxonomy' => 'course-category',
+                'field' => 'slug',
+                'terms' => sanitize_text_field($atts['category']),
+            ),
+        );
+    }
+    
+    // Get courses
+    $courses_query = esl_get_sensei_courses($query_args);
+    
+    if (!$courses_query || !$courses_query->have_posts()) {
+        return '<p class="esl-notice">No se encontraron cursos.</p>';
+    }
+    
+    // Determine grid columns class
+    $columns = intval($atts['columns']);
+    $columns_class = 'esl-grid-cols-' . min(max($columns, 1), 4);
+    
+    // Start output buffering
+    ob_start();
+    ?>
+    
+    <div class="esl-courses-shortcode <?php echo esc_attr($columns_class); ?>">
+        <?php while ($courses_query->have_posts()) : $courses_query->the_post(); ?>
+            <?php
+            $course_id = get_the_ID();
+            $course_data = esl_get_formatted_course_data($course_id);
+            ?>
+            
+            <div class="esl-course-card">
+                <div class="esl-course-image">
+                    <?php if (!empty($course_data['thumbnail'])) : ?>
+                        <img src="<?php echo esc_url($course_data['thumbnail']); ?>" alt="<?php echo esc_attr($course_data['title']); ?>">
+                    <?php endif; ?>
+                    
+                    <?php if ($course_data['is_enrolled']) : ?>
+                        <span class="esl-badge esl-badge-enrolled">Inscrito</span>
+                    <?php elseif ($course_data['has_certificate']) : ?>
+                        <span class="esl-badge esl-badge-certificate">Certificado</span>
+                    <?php endif; ?>
+                </div>
+                
+                <div class="esl-course-content">
+                    <h3 class="esl-course-title">
+                        <a href="<?php echo esc_url($course_data['permalink']); ?>">
+                            <?php echo esc_html($course_data['title']); ?>
+                        </a>
+                    </h3>
+                    
+                    <p class="esl-course-excerpt">
+                        <?php echo esc_html(wp_trim_words($course_data['excerpt'], 12)); ?>
+                    </p>
+                    
+                    <div class="esl-course-meta">
+                        <span><?php echo esc_html($course_data['difficulty']); ?></span>
+                        <span><?php echo esc_html($course_data['duration']); ?></span>
+                    </div>
+                    
+                    <div class="esl-course-footer">
+                        <span class="esl-price"><?php echo wp_kses_post($course_data['price']); ?></span>
+                        <a href="<?php echo esc_url($course_data['enrollment_url']); ?>" class="btn btn-primary btn-sm">
+                            <?php echo $course_data['is_enrolled'] ? 'Continuar' : 'Ver Curso'; ?>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <?php endwhile; ?>
+        <?php wp_reset_postdata(); ?>
+    </div>
+    
+    <style>
+    .esl-courses-shortcode {
+        display: grid;
+        gap: 24px;
+        margin: 32px 0;
+    }
+    
+    .esl-grid-cols-1 { grid-template-columns: 1fr; }
+    .esl-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .esl-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .esl-grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+    
+    .esl-course-card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .esl-course-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    
+    .esl-course-image {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+    
+    .esl-course-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .esl-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        padding: 4px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 4px;
+        color: #fff;
+    }
+    
+    .esl-badge-enrolled { background: #10b981; }
+    .esl-badge-certificate { background: #0066FF; }
+    
+    .esl-course-content {
+        padding: 20px;
+    }
+    
+    .esl-course-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+    
+    .esl-course-title a {
+        color: #1e293b;
+        text-decoration: none;
+    }
+    
+    .esl-course-title a:hover {
+        color: #0066FF;
+    }
+    
+    .esl-course-excerpt {
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 16px;
+    }
+    
+    .esl-course-meta {
+        display: flex;
+        gap: 12px;
+        font-size: 13px;
+        color: #64748b;
+        margin-bottom: 16px;
+        padding-top: 16px;
+        border-top: 1px solid #e2e8f0;
+    }
+    
+    .esl-course-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .esl-price {
+        font-size: 20px;
+        font-weight: 800;
+        color: #0066FF;
+    }
+    
+    .esl-notice {
+        padding: 16px 24px;
+        background: #fef3c7;
+        border-left: 4px solid #f59e0b;
+        border-radius: 8px;
+        color: #92400e;
+        margin: 24px 0;
+    }
+    
+    @media (max-width: 1024px) {
+        .esl-grid-cols-4,
+        .esl-grid-cols-3 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 640px) {
+        .esl-courses-shortcode {
+            grid-template-columns: 1fr !important;
+        }
+    }
+    </style>
+    
+    <?php
+    return ob_get_clean();
+}
+add_shortcode('esl_courses', 'esl_courses_shortcode');
+
