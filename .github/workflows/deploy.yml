@@ -25,7 +25,16 @@ jobs:
 
       - name: Deploy Astra Child via rsync
         run: |
+          # Asegurarnos de que el directorio de destino exista
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p public_html/wp-content/themes/astra-child/"
+          
+          # Sincronizar archivos (usamos ./ porque los archivos están en la raíz del repo)
           rsync -avz --delete \
-          ./ \
-          ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/public_html/wp-content/themes/astra-child/ \
-          -e "ssh -p ${{ secrets.SSH_PORT }}"
+            --exclude='.git*' \
+            --exclude='.github' \
+            --exclude='test-*.html' \
+            --exclude='*.md' \
+            ./ \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:public_html/wp-content/themes/astra-child/ \
+            -e "ssh -p ${{ secrets.SSH_PORT }}"
+
