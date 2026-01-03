@@ -23,18 +23,36 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy Astra Child via rsync
+      - name: 🔍 Debug Remote Path & Deploy
         run: |
-          # Asegurarnos de que el directorio de destino exista
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p public_html/wp-content/themes/astra-child/"
+          # 1. Intentar localizar la carpeta real de WordPress en el servidor
+          echo "Buscando carpeta del tema en el servidor..."
+          TARGET_PATH=$(ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "find ~ -type d -name 'astra-child' -path '*/wp-content/themes/*' | head -n 1")
           
-          # Sincronizar archivos (usamos ./ porque los archivos están en la raíz del repo)
+          if [ -z "$TARGET_PATH" ]; then
+            echo "⚠️ No se encontró la carpeta 'astra-child' automáticamente."
+            echo "Usando ruta por defecto: public_html/wp-content/themes/astra-child/"
+            TARGET_PATH="public_html/wp-content/themes/astra-child/"
+          else
+            echo "✅ Carpeta encontrada en: $TARGET_PATH"
+          fi
+
+          # 2. Asegurarnos de que el directorio exista (por si acaso)
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p $TARGET_PATH"
+          
+          # 3. Sincronizar archivos
+          echo "Sincronizando archivos a $TARGET_PATH..."
           rsync -avz --delete \
             --exclude='.git*' \
             --exclude='.github' \
             --exclude='test-*.html' \
             --exclude='*.md' \
             ./ \
-            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:public_html/wp-content/themes/astra-child/ \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:"$TARGET_PATH/" \
             -e "ssh -p ${{ secrets.SSH_PORT }}"
+          
+          # 4. Verificar fecha de modificación del style.css después del sync
+          echo "Verificando timestamp de style.css en el servidor..."
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "ls -la $TARGET_PATH/style.css"
+
 
