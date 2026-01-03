@@ -109,7 +109,10 @@
         <div class="container">
             <div class="footer-bottom-content">
                 <p class="copyright">
-                    &copy; <?php echo date('Y'); ?> Academia Pro. Todos los derechos reservados.
+                    &copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. Todos los derechos reservados.
+                    <span class="developer-credit" style="margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--color-gray-700);">
+                        Desarrollado por <a href="https://davidcaro.pro" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); text-decoration: none; font-weight: 600;">David Caro</a>
+                    </span>
                 </p>
                 <div class="footer-bottom-links">
                     <a href="#privacidad">Política de Privacidad</a>
