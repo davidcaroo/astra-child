@@ -387,3 +387,8 @@ function esl_courses_shortcode($atts) {
 }
 add_shortcode('esl_courses', 'esl_courses_shortcode');
 
+add_action( 'astra_header_after', function () {
+    echo '<div style="background:red;color:white;padding:10px;text-align:center">
+            HEADER ASTRA HOOK FUNCIONANDO
+          </div>';
+});
