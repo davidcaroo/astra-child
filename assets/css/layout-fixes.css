@@ -1,0 +1,39 @@
+/* 
+ * Additional CSS to ensure proper spacing for fixed header
+ * This file contains critical layout fixes
+ */
+
+/* Add padding to body to account for fixed header */
+body {
+    padding-top: 80px;
+}
+
+/* Ensure main content doesn't hide under header */
+.site-main {
+    position: relative;
+    z-index: 1;
+}
+
+/* Fix for Astra theme conflicts */
+.ast-container {
+    max-width: 100% !important;
+}
+
+.site-content {
+    padding: 0 !important;
+}
+
+/* Override Astra default styles that might conflict */
+.ast-separate-container .ast-article-single,
+.ast-separate-container .ast-article-post {
+    padding: 0;
+}
+
+.ast-separate-container .site-main>.ast-row {
+    margin: 0;
+}
+
+/* Ensure sections take full width */
+section {
+    width: 100%;
+}

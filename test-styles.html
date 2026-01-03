@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Academia Pro Styles</title>
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/utilities.css">
+    <link rel="stylesheet" href="assets/css/layout-fixes.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container" style="padding: 40px 0;">
+        <h1>Test de Estilos - Academia Pro</h1>
+        
+        <div style="margin: 40px 0;">
+            <h2>Botones</h2>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                <button class="btn btn-primary">Botón Primary</button>
+                <button class="btn btn-secondary">Botón Secondary</button>
+                <button class="btn btn-accent">Botón Accent</button>
+                <button class="btn btn-primary btn-lg">Botón Grande</button>
+                <button class="btn btn-primary btn-sm">Botón Pequeño</button>
+            </div>
+        </div>
+        
+        <div style="margin: 40px 0;">
+            <h2>Cards</h2>
+            <div class="row">
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Card de Prueba</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Este es el contenido de una card de prueba para verificar que los estilos se están cargando correctamente.</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary">Acción</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Otra Card</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Pasa el mouse sobre esta card para ver el efecto hover.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Tercera Card</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Los estilos deberían aplicarse automáticamente.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin: 40px 0;">
+            <h2>Colores</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px;">
+                <div style="padding: 20px; background: var(--color-primary); color: white; border-radius: 8px; text-align: center;">
+                    Primary Blue
+                </div>
+                <div style="padding: 20px; background: var(--color-secondary); color: white; border-radius: 8px; text-align: center;">
+                    Secondary Blue
+                </div>
+                <div style="padding: 20px; background: var(--color-accent); color: white; border-radius: 8px; text-align: center;">
+                    Accent Orange
+                </div>
+                <div style="padding: 20px; background: var(--color-success); color: white; border-radius: 8px; text-align: center;">
+                    Success Green
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin: 40px 0;">
+            <h2>Tipografía</h2>
+            <h1>Heading 1 - Poppins</h1>
+            <h2>Heading 2 - Poppins</h2>
+            <h3>Heading 3 - Poppins</h3>
+            <p>Este es un párrafo de texto usando la fuente Inter. Debería verse limpio y moderno.</p>
+            <p class="text-primary">Texto con color primario</p>
+            <p class="text-secondary">Texto con color secundario</p>
+        </div>
+        
+        <div style="margin: 40px 0;">
+            <h2>Formularios</h2>
+            <form style="max-width: 500px;">
+                <div style="margin-bottom: 16px;">
+                    <label>Nombre:</label>
+                    <input type="text" placeholder="Tu nombre">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label>Email:</label>
+                    <input type="email" placeholder="tu@email.com">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label>Mensaje:</label>
+                    <textarea rows="4" placeholder="Tu mensaje"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+        </div>
+        
+        <div style="margin: 40px 0; padding: 20px; background: var(--color-gray-50); border-radius: 12px;">
+            <h2>Estado de Carga de Estilos</h2>
+            <p><strong>Si ves este texto con estilos bonitos, colores azules, y las cards tienen sombras:</strong> ✅ Los estilos se están cargando correctamente.</p>
+            <p><strong>Si todo se ve plano y sin estilos:</strong> ❌ Los estilos NO se están cargando. Revisa la consola del navegador (F12).</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+# Ignore WordPress core files
+wp-config.php
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/cache/
+wp-content/backups/
+
+# Ignore node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Ignore OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# Ignore compiled files
+*.sass-cache/
+*.css.map
+*.js.map
+
+# Ignore temporary files
+*.tmp
+*.temp
+*.log
+*.swp
+*.swo
+*~
+
+# Ignore package manager files
+package-lock.json
+yarn.lock
+composer.lock
+
+# Ignore environment files
+.env
+.env.local
+.env.*.local
+
+# Ignore build directories
+/dist/
+/build/
+
+# Keep important files
+!assets/images/.gitkeep
+!assets/css/
+!assets/js/

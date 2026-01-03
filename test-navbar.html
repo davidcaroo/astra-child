@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Navbar - Emprende Sin Límites</title>
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/utilities.css">
+    <link rel="stylesheet" href="assets/css/layout-fixes.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Include header styles inline for testing */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--color-white);
+            border-bottom: 1px solid var(--color-gray-200);
+            transition: all 0.3s ease;
+        }
+
+        .site-header.scrolled {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .header-wrapper {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 40px;
+            height: 80px;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-image {
+            height: 45px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-image:hover {
+            transform: scale(1.05);
+        }
+
+        .header-nav {
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-menu>li {
+            position: relative;
+        }
+
+        .nav-menu>li>a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--color-gray-700);
+            font-family: var(--font-primary);
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-menu>li>a:hover {
+            color: var(--color-primary);
+            background: var(--color-gray-50);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-login {
+            padding: 10px 24px;
+            color: var(--color-gray-700);
+            font-family: var(--font-primary);
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-login:hover {
+            color: var(--color-primary);
+            background: var(--color-gray-50);
+        }
+
+        .mobile-toggle {
+            display: none;
+            position: relative;
+            width: 44px;
+            height: 44px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .hamburger-icon,
+        .close-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 18px;
+            transition: opacity 0.3s ease;
+        }
+
+        .close-icon {
+            opacity: 0;
+        }
+
+        .mobile-toggle.active .hamburger-icon {
+            opacity: 0;
+        }
+
+        .mobile-toggle.active .close-icon {
+            opacity: 1;
+        }
+
+        .hamburger-icon .line {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: var(--color-gray-700);
+            border-radius: 2px;
+            position: absolute;
+            left: 0;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-icon .line:nth-child(1) {
+            top: 0;
+        }
+
+        .hamburger-icon .line:nth-child(2) {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .hamburger-icon .line:nth-child(3) {
+            bottom: 0;
+        }
+
+        .close-icon .line {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: var(--color-gray-700);
+            border-radius: 2px;
+            position: absolute;
+            top: 50%;
+            left: 0;
+        }
+
+        .close-icon .line:nth-child(1) {
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .close-icon .line:nth-child(2) {
+            transform: translateY(-50%) rotate(-45deg);
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--color-white);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu-content {
+            padding: 24px;
+        }
+
+        .mobile-nav-menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .mobile-nav-menu li {
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+
+        .mobile-nav-menu li:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-nav-menu>li>a {
+            display: block;
+            padding: 16px 0;
+            color: var(--color-gray-900);
+            font-family: var(--font-primary);
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .mobile-nav-menu>li>a:hover {
+            color: var(--color-primary);
+        }
+
+        .mobile-menu-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--color-gray-200);
+        }
+
+        .btn-block {
+            width: 100%;
+            text-align: center;
+        }
+
+        @media (max-width: 1024px) {
+            .header-wrapper {
+                grid-template-columns: auto 1fr;
+                gap: 20px;
+            }
+
+            .header-nav,
+            .header-actions {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 16px;
+            }
+
+            .header-wrapper {
+                height: 70px;
+            }
+
+            .logo-image {
+                height: 38px;
+            }
+
+            .mobile-menu-overlay {
+                top: 70px;
+            }
+        }
+
+        body.mobile-menu-open {
+            overflow: hidden;
+        }
+
+        /* Test content */
+        .test-content {
+            padding: 120px 20px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="header-wrapper">
+                <!-- Logo - Left -->
+                <div class="header-logo">
+                    <a href="#" class="logo-link">
+                        <img src="assets/images/logo.svg" alt="Emprende Sin Límites" class="logo-image">
+                    </a>
+                </div>
+
+                <!-- Navigation - Center -->
+                <nav class="header-nav" role="navigation">
+                    <ul class="nav-menu">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#cursos">Cursos</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#account">My Account</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Actions - Right -->
+                <div class="header-actions">
+                    <a href="#login" class="btn-login">Iniciar Sesión</a>
+                    <a href="#registro" class="btn btn-primary">Registrarse</a>
+                </div>
+
+                <!-- Mobile Toggle -->
+                <button class="mobile-toggle" aria-label="Abrir menú" aria-expanded="false">
+                    <span class="hamburger-icon">
+                        <span class="line"></span>
+                        <span class="line"></span>
+                        <span class="line"></span>
+                    </span>
+                    <span class="close-icon">
+                        <span class="line"></span>
+                        <span class="line"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay">
+        <div class="mobile-menu-content">
+            <nav class="mobile-nav" role="navigation">
+                <ul class="mobile-nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#cursos">Cursos</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#account">My Account</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-actions">
+                <a href="#login" class="btn btn-secondary btn-block">Iniciar Sesión</a>
+                <a href="#registro" class="btn btn-primary btn-block">Registrarse</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Content -->
+    <div class="test-content">
+        <h1>Test de Navbar - Emprende Sin Límites</h1>
+        <p>Esta es una página de prueba para verificar el funcionamiento de la nueva navbar.</p>
+
+        <h2>Características:</h2>
+        <ul>
+            <li>✅ Logo a la izquierda</li>
+            <li>✅ Menú de navegación centrado</li>
+            <li>✅ Botones de acción a la derecha</li>
+            <li>✅ Menú hamburguesa en mobile</li>
+            <li>✅ Icono X para cerrar en mobile</li>
+            <li>✅ Compatible con menús de WordPress</li>
+            <li>✅ Responsive y moderno</li>
+        </ul>
+
+        <h2>Instrucciones de Prueba:</h2>
+        <ol>
+            <li>Redimensiona la ventana para ver el comportamiento responsive</li>
+            <li>En mobile (< 1024px), haz clic en el icono de hamburguesa</li>
+            <li>El menú debe expandirse desde abajo</li>
+            <li>El icono debe cambiar a una X</li>
+            <li>Haz clic en la X o fuera del menú para cerrarlo</li>
+            <li>Presiona ESC para cerrar el menú</li>
+        </ol>
+
+        <div
+            style="height: 1000px; background: linear-gradient(to bottom, #f8fafc, #e2e8f0); margin-top: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <p style="font-size: 24px; color: #64748b;">Contenido de prueba para scroll</p>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        (function ($) {
+            'use strict';
+
+            $(document).ready(function () {
+                initMobileMenu();
+                initHeaderScroll();
+            });
+
+            function initMobileMenu() {
+                const mobileToggle = $('.mobile-toggle');
+                const mobileOverlay = $('.mobile-menu-overlay');
+                const body = $('body');
+
+                mobileToggle.on('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const isActive = $(this).hasClass('active');
+
+                    if (isActive) {
+                        $(this).removeClass('active');
+                        $(this).attr('aria-expanded', 'false');
+                        $(this).attr('aria-label', 'Abrir menú');
+                        mobileOverlay.removeClass('active');
+                        body.removeClass('mobile-menu-open');
+                    } else {
+                        $(this).addClass('active');
+                        $(this).attr('aria-expanded', 'true');
+                        $(this).attr('aria-label', 'Cerrar menú');
+                        mobileOverlay.addClass('active');
+                        body.addClass('mobile-menu-open');
+                    }
+                });
+
+                mobileOverlay.on('click', function (e) {
+                    if ($(e.target).is('.mobile-menu-overlay')) {
+                        mobileToggle.removeClass('active');
+                        mobileToggle.attr('aria-expanded', 'false');
+                        mobileToggle.attr('aria-label', 'Abrir menú');
+                        mobileOverlay.removeClass('active');
+                        body.removeClass('mobile-menu-open');
+                    }
+                });
+
+                $(document).on('keyup', function (e) {
+                    if (e.key === 'Escape' && mobileOverlay.hasClass('active')) {
+                        mobileToggle.removeClass('active');
+                        mobileToggle.attr('aria-expanded', 'false');
+                        mobileToggle.attr('aria-label', 'Abrir menú');
+                        mobileOverlay.removeClass('active');
+                        body.removeClass('mobile-menu-open');
+                    }
+                });
+
+                $('.mobile-nav-menu a').on('click', function () {
+                    mobileToggle.removeClass('active');
+                    mobileToggle.attr('aria-expanded', 'false');
+                    mobileToggle.attr('aria-label', 'Abrir menú');
+                    mobileOverlay.removeClass('active');
+                    body.removeClass('mobile-menu-open');
+                });
+            }
+
+            function initHeaderScroll() {
+                const header = $('.site-header');
+
+                $(window).on('scroll', function () {
+                    if ($(this).scrollTop() > 50) {
+                        header.addClass('scrolled');
+                    } else {
+                        header.removeClass('scrolled');
+                    }
+                });
+            }
+
+        })(jQuery);
+    </script>
+</body>
+
+</html>
