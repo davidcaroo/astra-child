@@ -1,4 +1,4 @@
-# Ignore WordPress core files
+# WordPress core files
 wp-config.php
 wp-content/uploads/
 wp-content/upgrade/
@@ -6,12 +6,14 @@ wp-content/backup-db/
 wp-content/cache/
 wp-content/backups/
 
-# Ignore node modules
+# Node modules
 node_modules/
 npm-debug.log
 yarn-error.log
+package-lock.json
+yarn.lock
 
-# Ignore OS files
+# OS files
 .DS_Store
 .DS_Store?
 ._*
@@ -21,19 +23,19 @@ ehthumbs.db
 Thumbs.db
 desktop.ini
 
-# Ignore IDE files
+# IDE files
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
 *.code-workspace
 
-# Ignore compiled files
+# Compiled files
 *.sass-cache/
 *.css.map
 *.js.map
 
-# Ignore temporary files
+# Temporary files
 *.tmp
 *.temp
 *.log
@@ -41,19 +43,30 @@ desktop.ini
 *.swo
 *~
 
-# Ignore package manager files
-package-lock.json
-yarn.lock
-composer.lock
-
-# Ignore environment files
+# Environment files
 .env
 .env.local
 .env.*.local
 
-# Ignore build directories
+# Build directories
 /dist/
 /build/
+
+# Test files (no subir a producción)
+test-navbar.html
+test-styles.html
+
+# SSH keys (NUNCA subir)
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+
+# Composer
+composer.lock
+vendor/
 
 # Keep important files
 !assets/images/.gitkeep
