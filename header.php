@@ -457,23 +457,30 @@
 /* Responsive Breakpoints */
 @media (max-width: 1024px) {
     .header-wrapper {
-        grid-template-columns: auto 1fr;
-        gap: 20px;
+        grid-template-columns: auto auto !important;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 0 15px;
     }
     
     .header-nav,
     .header-actions {
-        display: none;
+        display: none !important;
     }
     
     .mobile-toggle {
-        display: block;
+        display: flex !important;
+        margin-left: auto;
+    }
+
+    .mobile-menu-overlay {
+        display: block !important;
     }
 }
 
 @media (max-width: 768px) {
     .header-container {
-        padding: 0 16px;
+        padding: 0 15px;
     }
     
     .header-wrapper {
@@ -481,7 +488,7 @@
     }
     
     .logo-image {
-        height: 38px;
+        height: 35px;
     }
     
     .mobile-menu-overlay {
@@ -489,8 +496,19 @@
     }
 }
 
+/* Ensure mobile menu structure is correct for the logic in main.js */
+.mobile-menu-overlay {
+    display: none; /* Default hidden */
+}
+
 /* Prevent body scroll when mobile menu is open */
 body.mobile-menu-open {
-    overflow: hidden;
+    overflow: hidden !important;
+}
+
+/* Fix Astra Header Breakpoint */
+.ast-header-break-point .site-header {
+    display: block !important;
 }
 </style>
+
