@@ -1,3 +1,14 @@
+<?php
+// Fetch dynamic values from Customizer
+$footer_desc = get_theme_mod('academia_footer_description', 'Transformando vidas a través de educación online de calidad en marketing, ventas y emprendimiento. Sin límites para tu crecimiento.');
+$social_facebook = get_theme_mod('academia_footer_social_facebook', '#');
+$social_twitter = get_theme_mod('academia_footer_social_twitter', '#');
+$social_linkedin = get_theme_mod('academia_footer_social_linkedin', '#');
+$social_instagram = get_theme_mod('academia_footer_social_instagram', '#');
+$contact_email = get_theme_mod('academia_footer_email', 'info@emprendesinlimites.co');
+$contact_phone = get_theme_mod('academia_footer_phone', '+1 (234) 567-890');
+$contact_hours = get_theme_mod('academia_footer_hours', 'Lun - Vie: 9:00 - 18:00');
+?>
 <footer class="site-footer">
     <div class="footer-main">
         <div class="container">
@@ -5,60 +16,111 @@
                 <!-- Footer Column 1 - About -->
                 <div class="footer-column">
                     <div class="footer-logo">
-                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logo.svg" alt="Emprende Sin Límites" style="height: 40px; margin-bottom: 16px;">
+                        <?php 
+                        $custom_logo_id = get_theme_mod('custom_logo');
+                        $logo = wp_get_attachment_image_src($custom_logo_id, 'full');
+                        if (has_custom_logo()) {
+                            echo '<img src="' . esc_url($logo[0]) . '" alt="' . get_bloginfo('name') . '" style="height: 40px; margin-bottom: 16px;">';
+                        } else {
+                            echo '<img src="' . get_stylesheet_directory_uri() . '/assets/images/logo.svg" alt="Emprende Sin Límites" style="height: 40px; margin-bottom: 16px;">';
+                        }
+                        ?>
                     </div>
                     <p class="footer-description">
-                        Transformando vidas a través de educación online de calidad en marketing, ventas y emprendimiento. Sin límites para tu crecimiento.
+                        <?php echo esc_html($footer_desc); ?>
                     </p>
                     <div class="footer-social">
-                        <a href="#" class="social-link" aria-label="Facebook">
+                        <?php if ($social_facebook != '#'): ?>
+                        <a href="<?php echo esc_url($social_facebook); ?>" class="social-link" aria-label="Facebook">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M10 0C4.477 0 0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.879V12.89h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.989C16.343 19.129 20 14.99 20 10c0-5.523-4.477-10-10-10z"/>
                             </svg>
                         </a>
-                        <a href="#" class="social-link" aria-label="Twitter">
+                        <?php endif; ?>
+                        <?php if ($social_twitter != '#'): ?>
+                        <a href="<?php echo esc_url($social_twitter); ?>" class="social-link" aria-label="Twitter">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84"/>
                             </svg>
                         </a>
-                        <a href="#" class="social-link" aria-label="LinkedIn">
+                        <?php endif; ?>
+                        <?php if ($social_linkedin != '#'): ?>
+                        <a href="<?php echo esc_url($social_linkedin); ?>" class="social-link" aria-label="LinkedIn">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 01.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
                             </svg>
                         </a>
-                        <a href="#" class="social-link" aria-label="Instagram">
+                        <?php endif; ?>
+                        <?php if ($social_instagram != '#'): ?>
+                        <a href="<?php echo esc_url($social_instagram); ?>" class="social-link" aria-label="Instagram">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M10 0C7.284 0 6.944.012 5.877.06 4.813.11 4.086.278 3.45.525a4.92 4.92 0 00-1.772 1.153A4.92 4.92 0 00.525 3.45C.278 4.086.109 4.813.06 5.877.012 6.944 0 7.284 0 10s.012 3.056.06 4.123c.05 1.064.218 1.791.465 2.427a4.92 4.92 0 001.153 1.772 4.92 4.92 0 001.772 1.153c.636.247 1.363.416 2.427.465C6.944 19.988 7.284 20 10 20s3.056-.012 4.123-.06c1.064-.05 1.791-.218 2.427-.465a4.92 4.92 0 001.772-1.153 4.92 4.92 0 001.153-1.772c.247-.636.416-1.363.465-2.427.048-1.067.06-1.407.06-4.123s-.012-3.056-.06-4.123c-.05-1.064-.218-1.791-.465-2.427a4.92 4.92 0 00-1.153-1.772A4.92 4.92 0 0016.55.525C15.914.278 15.187.109 14.123.06 13.056.012 12.716 0 10 0zm0 1.802c2.67 0 2.986.01 4.04.058.976.045 1.505.207 1.858.344.466.181.8.398 1.15.748.35.35.566.684.748 1.15.137.353.3.882.344 1.857.048 1.055.058 1.37.058 4.041 0 2.67-.01 2.986-.058 4.04-.045.976-.207 1.505-.344 1.858a3.097 3.097 0 01-.748 1.15c-.35.35-.684.566-1.15.748-.353.137-.882.3-1.857.344-1.054.048-1.37.058-4.041.058-2.67 0-2.987-.01-4.04-.058-.976-.045-1.505-.207-1.858-.344a3.097 3.097 0 01-1.15-.748 3.098 3.098 0 01-.748-1.15c-.137-.353-.3-.882-.344-1.857-.048-1.055-.058-1.37-.058-4.041 0-2.67.01-2.986.058-4.04.045-.976.207-1.505.344-1.858.181-.466.398-.8.748-1.15.35-.35.684-.566 1.15-.748.353-.137.882-.3 1.857-.344 1.055-.048 1.37-.058 4.041-.058z"/>
                                 <path d="M10 13.333a3.333 3.333 0 110-6.666 3.333 3.333 0 010 6.666zm0-8.468a5.135 5.135 0 100 10.27 5.135 5.135 0 000-10.27zm6.538-.203a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0z"/>
                             </svg>
                         </a>
+                        <?php endif; ?>
                     </div>
+                    <?php if (is_active_sidebar('footer-1')) : ?>
+                        <div class="footer-widget-area mt-4">
+                            <?php dynamic_sidebar('footer-1'); ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 
                 <!-- Footer Column 2 - Quick Links -->
                 <div class="footer-column">
                     <h3 class="footer-title">Enlaces Rápidos</h3>
-                    <ul class="footer-menu">
-                        <li><a href="#cursos">Cursos</a></li>
-                        <li><a href="#instructores">Instructores</a></li>
-                        <li><a href="#precios">Precios</a></li>
-                        <li><a href="#blog">Blog</a></li>
-                        <li><a href="#sobre-nosotros">Sobre Nosotros</a></li>
-                        <li><a href="#contacto">Contacto</a></li>
-                    </ul>
+                    <?php 
+                    if (has_nav_menu('footer_links')) {
+                        wp_nav_menu(array(
+                            'theme_location' => 'footer_links',
+                            'container' => false,
+                            'menu_class' => 'footer-menu',
+                        ));
+                    } else {
+                        echo '<ul class="footer-menu">
+                            <li><a href="#cursos">Cursos</a></li>
+                            <li><a href="#instructores">Instructores</a></li>
+                            <li><a href="#precios">Precios</a></li>
+                            <li><a href="#blog">Blog</a></li>
+                            <li><a href="#sobre-nosotros">Sobre Nosotros</a></li>
+                            <li><a href="#contacto">Contacto</a></li>
+                        </ul>';
+                    }
+                    ?>
+                    <?php if (is_active_sidebar('footer-2')) : ?>
+                        <div class="footer-widget-area mt-4">
+                            <?php dynamic_sidebar('footer-2'); ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 
                 <!-- Footer Column 3 - Categories -->
                 <div class="footer-column">
                     <h3 class="footer-title">Categorías</h3>
-                    <ul class="footer-menu">
-                        <li><a href="#marketing">Marketing Digital</a></li>
-                        <li><a href="#ventas">Ventas B2B</a></li>
-                        <li><a href="#emprendimiento">Emprendimiento</a></li>
-                        <li><a href="#redes-sociales">Redes Sociales</a></li>
-                        <li><a href="#seo">SEO & SEM</a></li>
-                        <li><a href="#ecommerce">E-commerce</a></li>
-                    </ul>
+                    <?php 
+                    if (has_nav_menu('footer_categories')) {
+                        wp_nav_menu(array(
+                            'theme_location' => 'footer_categories',
+                            'container' => false,
+                            'menu_class' => 'footer-menu',
+                        ));
+                    } else {
+                        echo '<ul class="footer-menu">
+                            <li><a href="#marketing">Marketing Digital</a></li>
+                            <li><a href="#ventas">Ventas B2B</a></li>
+                            <li><a href="#emprendimiento">Emprendimiento</a></li>
+                            <li><a href="#redes-sociales">Redes Sociales</a></li>
+                            <li><a href="#seo">SEO & SEM</a></li>
+                            <li><a href="#ecommerce">E-commerce</a></li>
+                        </ul>';
+                    }
+                    ?>
+                    <?php if (is_active_sidebar('footer-3')) : ?>
+                        <div class="footer-widget-area mt-4">
+                            <?php dynamic_sidebar('footer-3'); ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 
                 <!-- Footer Column 4 - Contact -->
@@ -70,35 +132,41 @@
                                 <path d="M2 3L8 8L14 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 <rect x="2" y="3" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
                             </svg>
-                            <a href="mailto:info@academiapro.com">info@academiapro.com</a>
+                            <a href="mailto:<?php echo esc_attr($contact_email); ?>"><?php echo esc_html($contact_email); ?></a>
                         </li>
                         <li>
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                                 <path d="M3 5C3 3.89543 3.89543 3 5 3H6.5C6.77614 3 7 3.22386 7 3.5C7 4.88071 7.5 6 8 6C8.5 6 9 4.88071 9 3.5C9 3.22386 9.22386 3 9.5 3H11C12.1046 3 13 3.89543 13 5V11C13 12.1046 12.1046 13 11 13H5C3.89543 13 3 12.1046 3 11V5Z" stroke="currentColor" stroke-width="1.5"/>
                             </svg>
-                            <a href="tel:+1234567890">+1 (234) 567-890</a>
+                            <a href="tel:<?php echo esc_attr($contact_phone); ?>"><?php echo esc_html($contact_phone); ?></a>
                         </li>
                         <li>
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                                 <path d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z" stroke="currentColor" stroke-width="1.5"/>
                                 <path d="M8 5V8L10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                             </svg>
-                            <span>Lun - Vie: 9:00 - 18:00</span>
+                            <span><?php echo esc_html($contact_hours); ?></span>
                         </li>
                     </ul>
                     
-                    <!-- Newsletter -->
-                    <div class="footer-newsletter">
-                        <h4 class="newsletter-title">Newsletter</h4>
-                        <form class="newsletter-form">
-                            <input type="email" placeholder="Tu email" required>
-                            <button type="submit" class="btn btn-primary btn-sm">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
+                    <?php if (is_active_sidebar('footer-4')) : ?>
+                        <div class="footer-widget-area">
+                            <?php dynamic_sidebar('footer-4'); ?>
+                        </div>
+                    <?php else: ?>
+                        <!-- Newsletter -->
+                        <div class="footer-newsletter">
+                            <h4 class="newsletter-title">Newsletter</h4>
+                            <form class="newsletter-form">
+                                <input type="email" placeholder="Tu email" required>
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

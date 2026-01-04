@@ -75,7 +75,8 @@ function academia_theme_setup() {
     // Register navigation menus
     register_nav_menus(array(
         'primary' => __('Primary Menu', 'academia-pro'),
-        'footer' => __('Footer Menu', 'academia-pro'),
+        'footer_links' => __('Footer - Enlaces Rápidos', 'academia-pro'),
+        'footer_categories' => __('Footer - Categorías', 'academia-pro'),
     ));
 }
 add_action('after_setup_theme', 'academia_theme_setup');
@@ -202,6 +203,79 @@ function academia_customize_register($wp_customize) {
         'label'    => __('Link Botón Primario', 'academia-pro'),
         'section'  => 'academia_cta_section',
         'type'     => 'url',
+    ));
+
+    // --- Footer Section ---
+    $wp_customize->add_section('academia_footer_section', array(
+        'title'    => __('Sección Footer', 'academia-pro'),
+        'priority' => 40,
+    ));
+
+    // Footer Description
+    $wp_customize->add_setting('academia_footer_description', array(
+        'default'           => 'Transformando vidas a través de educación online de calidad en marketing, ventas y emprendimiento. Sin límites para tu crecimiento.',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+
+    $wp_customize->add_control('academia_footer_description', array(
+        'label'    => __('Descripción del Footer', 'academia-pro'),
+        'section'  => 'academia_footer_section',
+        'type'     => 'textarea',
+    ));
+
+    // Social Links
+    $socials = array(
+        'facebook'  => 'Facebook',
+        'twitter'   => 'Twitter (X)',
+        'linkedin'  => 'LinkedIn',
+        'instagram' => 'Instagram',
+    );
+
+    foreach ($socials as $id => $label) {
+        $wp_customize->add_setting('academia_footer_social_' . $id, array(
+            'default'           => '#',
+            'sanitize_callback' => 'esc_url_raw',
+        ));
+
+        $wp_customize->add_control('academia_footer_social_' . $id, array(
+            'label'    => sprintf(__('URL de %s', 'academia-pro'), $label),
+            'section'  => 'academia_footer_section',
+            'type'     => 'url',
+        ));
+    }
+
+    // Contact Info
+    $wp_customize->add_setting('academia_footer_email', array(
+        'default'           => 'info@emprendesinlimites.co',
+        'sanitize_callback' => 'sanitize_email',
+    ));
+
+    $wp_customize->add_control('academia_footer_email', array(
+        'label'    => __('Email de Contacto', 'academia-pro'),
+        'section'  => 'academia_footer_section',
+        'type'     => 'email',
+    ));
+
+    $wp_customize->add_setting('academia_footer_phone', array(
+        'default'           => '+1 (234) 567-890',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_footer_phone', array(
+        'label'    => __('Teléfono de Contacto', 'academia-pro'),
+        'section'  => 'academia_footer_section',
+        'type'     => 'text',
+    ));
+
+    $wp_customize->add_setting('academia_footer_hours', array(
+        'default'           => 'Lun - Vie: 9:00 - 18:00',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_footer_hours', array(
+        'label'    => __('Horarios de Atención', 'academia-pro'),
+        'section'  => 'academia_footer_section',
+        'type'     => 'text',
     ));
 }
 add_action('customize_register', 'academia_customize_register');
