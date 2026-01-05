@@ -10,6 +10,9 @@ get_header(); ?>
     <!-- Hero Section -->
     <?php include get_stylesheet_directory() . '/blocks/hero/hero.php'; ?>
     
+    <!-- Inscription CTA Section -->
+    <?php include get_stylesheet_directory() . '/blocks/inscription-cta/inscription-cta.php'; ?>
+    
     <!-- Courses Grid Section -->
     <?php include get_stylesheet_directory() . '/blocks/courses-grid/courses-grid.php'; ?>
     
