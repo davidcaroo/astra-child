@@ -1,0 +1,321 @@
+/**
+ * About Page Styles
+ * Premium layout for "Nosotros" page
+ */
+
+/* --- Hero Section --- */
+.about-hero {
+    position: relative;
+    padding: 120px 0 80px;
+    background: var(--color-primary);
+    color: var(--color-white);
+    overflow: hidden;
+}
+
+.about-hero-background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-primary);
+    opacity: 0.95;
+}
+
+.hero-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+}
+
+.about-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+}
+
+.about-hero-title {
+    font-size: var(--font-size-5xl);
+    font-weight: var(--font-weight-extrabold);
+    line-height: 1.1;
+    margin: 0;
+}
+
+/* --- Academy History Section --- */
+.history-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-4xl);
+    align-items: center;
+}
+
+.history-image-wrapper {
+    position: relative;
+}
+
+.image-frame {
+    position: relative;
+    border-radius: var(--radius-2xl);
+    overflow: visible;
+}
+
+.history-img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-xl);
+    position: relative;
+    z-index: 2;
+}
+
+.image-accent {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 100px;
+    height: 100px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-lg);
+    z-index: 1;
+    opacity: 0.3;
+}
+
+.history-text .section-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(0, 102, 255, 0.1);
+    color: var(--color-primary);
+    border-radius: var(--radius-full);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-md);
+}
+
+.history-text .section-title {
+    font-size: var(--font-size-4xl);
+    margin-bottom: var(--spacing-lg);
+}
+
+.history-text .section-content {
+    color: var(--color-gray-600);
+    font-size: var(--font-size-lg);
+}
+
+/* --- Instructors Section --- */
+.instructors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.instructor-card {
+    background: var(--color-white);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
+    border: 1px solid var(--color-gray-100);
+}
+
+.instructor-image {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+}
+
+.instructor-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.instructor-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 102, 255, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.instructor-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 102, 255, 0.25);
+    /* Blue Shadow */
+    border-color: var(--color-primary-light);
+}
+
+.instructor-card:hover .instructor-image img {
+    transform: scale(1.1);
+}
+
+.instructor-card:hover .instructor-overlay {
+    opacity: 1;
+}
+
+.instructor-info {
+    padding: var(--spacing-lg);
+    text-align: center;
+}
+
+.instructor-name {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-gray-900);
+    margin-bottom: var(--spacing-xs);
+}
+
+.instructor-role {
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+}
+
+.instructor-role p {
+    margin: 0;
+}
+
+/* --- Sponsors Section --- */
+.sponsors-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-3xl);
+    opacity: 0.7;
+    filter: grayscale(1);
+}
+
+.sponsor-item img {
+    max-height: 50px;
+    width: auto;
+}
+
+/* --- Modal Styles --- */
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg);
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(8px);
+}
+
+.modal-container {
+    position: relative;
+    background: var(--color-white);
+    border-radius: var(--radius-2xl);
+    width: 100%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 2;
+    padding: var(--spacing-2xl);
+    box-shadow: var(--shadow-2xl);
+    animation: modalIn 0.3s ease-out;
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--color-gray-100);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+}
+
+.modal-close:hover {
+    background: var(--color-error);
+    color: var(--color-white);
+}
+
+.modal-instructor-header {
+    display: flex;
+    gap: var(--spacing-xl);
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+    border-bottom: 2px solid var(--color-gray-100);
+}
+
+.modal-instructor-header img {
+    width: 150px;
+    height: 150px;
+    border-radius: var(--radius-xl);
+    object-fit: cover;
+}
+
+.modal-instructor-header h3 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-xs);
+}
+
+.modal-instructor-header .role {
+    font-size: var(--font-size-lg);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.modal-instructor-body {
+    font-size: var(--font-size-base);
+    line-height: 1.8;
+    color: var(--color-gray-600);
+}
+
+/* Responsividad */
+@media (max-width: 991px) {
+    .history-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-2xl);
+    }
+
+    .about-hero-title {
+        font-size: var(--font-size-4xl);
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-instructor-header {
+        flex-direction: column;
+        text-align: center;
+    }
+}

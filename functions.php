@@ -37,6 +37,12 @@ function academia_enqueue_styles() {
     
     // Enqueue Google Fonts
     wp_enqueue_style('academia-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap', array(), null);
+
+    // Enqueue About page assets
+    if (is_page_template('template-about.php')) {
+        wp_enqueue_style('academia-about', ACADEMIA_THEME_URI . '/assets/css/about.css', array('academia-layout-fixes'), ACADEMIA_VERSION);
+        wp_enqueue_script('academia-about-js', ACADEMIA_THEME_URI . '/assets/js/about.js', array('jquery'), ACADEMIA_VERSION, true);
+    }
 }
 add_action('wp_enqueue_scripts', 'academia_enqueue_styles', 15);
 
@@ -277,6 +283,84 @@ function academia_customize_register($wp_customize) {
         'section'  => 'academia_footer_section',
         'type'     => 'text',
     ));
+
+    // --- About Page Section ---
+    $wp_customize->add_section('academia_about_section', array(
+        'title'    => __('Página Nosotros', 'academia-pro'),
+        'priority' => 45,
+    ));
+
+    // About Hero Title
+    $wp_customize->add_setting('academia_about_hero_title', array(
+        'default'           => 'Nuestra Misión: Empoderar a los Emprendedores del Futuro',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_about_hero_title', array(
+        'label'    => __('Título Hero About', 'academia-pro'),
+        'section'  => 'academia_about_section',
+        'type'     => 'text',
+    ));
+
+    // About History Title
+    $wp_customize->add_setting('academia_about_history_title', array(
+        'default'           => 'Nuestra Historia',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_about_history_title', array(
+        'label'    => __('Título Historia', 'academia-pro'),
+        'section'  => 'academia_about_section',
+        'type'     => 'text',
+    ));
+
+    // About History Content
+    $wp_customize->add_setting('academia_about_history_content', array(
+        'default'           => 'Emprende Sin Límites nace con una visión clara: democratizar el acceso a la educación de marketing y ventas de alto nivel para toda la comunidad hispanoahablante.',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+
+    $wp_customize->add_control('academia_about_history_content', array(
+        'label'    => __('Contenido Historia', 'academia-pro'),
+        'section'  => 'academia_about_section',
+        'type'     => 'textarea',
+    ));
+
+    // About History Image
+    $wp_customize->add_setting('academia_about_history_image', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'academia_about_history_image', array(
+        'label'    => __('Imagen Historia', 'academia-pro'),
+        'section'  => 'academia_about_section',
+    )));
+
+    // Sponsors Title
+    $wp_customize->add_setting('academia_about_sponsors_title', array(
+        'default'           => 'Impulsados por los Mejores',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_about_sponsors_title', array(
+        'label'    => __('Título Patrocinadores', 'academia-pro'),
+        'section'  => 'academia_about_section',
+        'type'     => 'text',
+    ));
+
+    // Sponsor Logos (1-5)
+    for ($i = 1; $i <= 5; $i++) {
+        $wp_customize->add_setting('academia_about_sponsor_' . $i, array(
+            'default'           => '',
+            'sanitize_callback' => 'esc_url_raw',
+        ));
+
+        $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'academia_about_sponsor_' . $i, array(
+            'label'    => sprintf(__('Logo Patrocinador %d', 'academia-pro'), $i),
+             'section'  => 'academia_about_section',
+        )));
+    }
 }
 add_action('customize_register', 'academia_customize_register');
 
@@ -592,3 +676,38 @@ add_action( 'astra_header_after', function () {
             HEADER ASTRA HOOK FUNCIONANDO
           </div>';
 });
+
+/**
+ * Register Instructors Custom Post Type
+ */
+function academia_register_instructors_cpt() {
+    $labels = array(
+        'name'                  => _x('Instructores', 'Post Type General Name', 'academia-pro'),
+        'singular_name'         => _x('Instructor', 'Post Type Singular Name', 'academia-pro'),
+        'menu_name'             => __('Instructores', 'academia-pro'),
+        'name_admin_bar'        => __('Instructor', 'academia-pro'),
+        'all_items'             => __('Todos los Instructores', 'academia-pro'),
+        'add_new_item'          => __('Añadir Nuevo Instructor', 'academia-pro'),
+        'add_new'               => __('Añadir Nuevo', 'academia-pro'),
+        'edit_item'             => __('Editar Instructor', 'academia-pro'),
+        'update_item'           => __('Actualizar Instructor', 'academia-pro'),
+        'featured_image'        => __('Foto de Perfil', 'academia-pro'),
+        'set_featured_image'    => __('Asignar foto de perfil', 'academia-pro'),
+        'remove_featured_image' => __('Eliminar foto de perfil', 'academia-pro'),
+        'use_featured_image'    => __('Usar como foto de perfil', 'academia-pro'),
+    );
+    $args = array(
+        'label'                 => __('Instructor', 'academia-pro'),
+        'labels'                => $labels,
+        'supports'              => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
+        'public'                => true,
+        'show_ui'               => true,
+        'show_in_menu'          => true,
+        'menu_position'         => 5,
+        'menu_icon'             => 'dashicons-businessman',
+        'has_archive'           => false,
+        'show_in_rest'          => true,
+    );
+    register_post_type('instructor', $args);
+}
+add_action('init', 'academia_register_instructors_cpt', 0);
