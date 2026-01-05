@@ -189,8 +189,16 @@
     align-items: center;
     flex-wrap: wrap;
     gap: var(--spacing-3xl);
-    opacity: 0.7;
-    filter: grayscale(1);
+}
+
+.sponsor-item {
+    transition: all var(--transition-base);
+    opacity: 0.8;
+}
+
+.sponsor-item:hover {
+    opacity: 1;
+    transform: scale(1.05);
 }
 
 .sponsor-item img {
