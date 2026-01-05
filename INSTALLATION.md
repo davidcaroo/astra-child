@@ -1,4 +1,4 @@
-# Academia Pro - Installation Guide
+# Emprende Sin Límites - Installation Guide
 
 ## Prerequisites
 

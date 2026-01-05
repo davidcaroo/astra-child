@@ -1,4 +1,4 @@
-# Academia Pro - WordPress Theme
+# Emprende Sin Límites - WordPress Theme
 ## Complete File Structure
 
 ```

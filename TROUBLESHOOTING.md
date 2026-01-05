@@ -1,4 +1,4 @@
-# Solución de Problemas - Academia Pro
+# Solución de Problemas - Emprende Sin Límites
 
 ## Problema: Los estilos no se cargan
 
@@ -6,7 +6,7 @@
 
 #### 1. **Verificar que el tema esté activado correctamente**
 
-Ve a **Apariencia > Temas** y asegúrate de que "Academia Pro - Astra Child" esté activado (no solo Astra).
+Ve a **Apariencia > Temas** y asegúrate de que "Emprende Sin Límites - Astra Child" esté activado (no solo Astra).
 
 #### 2. **Limpiar caché**
 
@@ -43,7 +43,7 @@ En WordPress admin:
 
 Este es un tema hijo de Astra. Debes tener:
 1. Astra theme instalado
-2. Academia Pro activado (no Astra)
+2. Emprende Sin Límites activado (no Astra)
 
 #### 7. **Modo de depuración**
 
