@@ -125,11 +125,12 @@ get_header(); ?>
     <!-- Sponsors Section -->
     <?php 
     $sponsors_title = get_theme_mod('academia_about_sponsors_title', 'Impulsados por los Mejores');
+    $sponsor_logo_size = get_theme_mod('academia_about_sponsor_logo_size', 60);
     ?>
     <section class="sponsors-section section">
         <div class="container">
             <h2 class="sponsors-title text-center animate-on-scroll fade-in"><?php echo esc_html($sponsors_title); ?></h2>
-            <div class="sponsors-grid animate-on-scroll fade-in">
+            <div class="sponsors-grid animate-on-scroll fade-in" style="--sponsor-logo-size: <?php echo esc_attr($sponsor_logo_size); ?>px;">
                 <?php 
                 for ($i = 1; $i <= 5; $i++) :
                     $sponsor_logo = get_theme_mod('academia_about_sponsor_' . $i);

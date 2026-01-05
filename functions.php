@@ -361,6 +361,24 @@ function academia_customize_register($wp_customize) {
              'section'  => 'academia_about_section',
         )));
     }
+
+    // Sponsor Logo Size Slider
+    $wp_customize->add_setting('academia_about_sponsor_logo_size', array(
+        'default'           => 60,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('academia_about_sponsor_logo_size', array(
+        'label'    => __('Tamaño de Logos (PX)', 'academia-pro'),
+        'section'  => 'academia_about_section',
+        'type'     => 'range',
+        'input_attrs' => array(
+            'min'  => 30,
+            'max'  => 180,
+            'step' => 1,
+        ),
+    ));
 }
 add_action('customize_register', 'academia_customize_register');
 

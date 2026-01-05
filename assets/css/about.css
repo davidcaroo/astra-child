@@ -202,7 +202,7 @@
 }
 
 .sponsor-item img {
-    max-height: 50px;
+    max-height: var(--sponsor-logo-size, 50px);
     width: auto;
 }
 
