@@ -1,5 +1,5 @@
 /**
- * Academia Pro - Main JavaScript
+ * Emprende Sin Límites - Main JavaScript
  * Modern interactions and animations
  */
 

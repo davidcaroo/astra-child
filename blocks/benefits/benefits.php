@@ -5,7 +5,7 @@
     <div class="container">
         <div class="section-header text-center animate-on-scroll fade-in">
             <span class="section-badge">Beneficios</span>
-            <h2 class="section-title">¿Por Qué Elegir Academia Pro?</h2>
+            <h2 class="section-title">¿Por Qué Elegir Emprende Sin Límites?</h2>
             <p class="section-description">
                 Ofrecemos una experiencia de aprendizaje única diseñada para tu éxito profesional
             </p>

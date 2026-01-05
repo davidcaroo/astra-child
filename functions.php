@@ -1,6 +1,6 @@
 <?php
 /**
- * Academia Pro - Astra Child Theme Functions
+ * Emprende Sin Límites - Astra Child Theme Functions
  * 
  * @package Academia_Pro
  * @since 1.0.0
