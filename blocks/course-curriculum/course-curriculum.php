@@ -122,18 +122,21 @@
 
 .module-step {
     position: absolute;
-    top: -10px;
-    right: -10px;
-    font-size: 80px;
-    font-weight: 900;
-    color: var(--color-gray-100);
+    top: 20px;
+    right: 25px;
+    font-size: var(--font-size-2xl);
+    font-weight: 800;
+    color: var(--color-primary);
     line-height: 1;
-    z-index: 0;
+    z-index: 2;
+    opacity: 0.15;
     transition: all 0.3s ease;
+    font-family: var(--font-heading);
 }
 
 .module-card:hover .module-step {
-    color: rgba(0, 102, 255, 0.05);
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 .module-icon {
