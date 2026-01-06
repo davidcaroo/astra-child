@@ -18,10 +18,18 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
 
+      - name: 🔍 Debug Secrets (Check if populated)
+        run: |
+          if [ -z "${{ secrets.SSH_HOST }}" ]; then echo "❌ SSH_HOST is empty"; fi
+          if [ -z "${{ secrets.SSH_PORT }}" ]; then echo "❌ SSH_PORT is empty"; fi
+          if [ -z "${{ secrets.SSH_USER }}" ]; then echo "❌ SSH_USER is empty"; fi
+          if [ -z "${{ secrets.SSH_KEY }}" ]; then echo "❌ SSH_KEY is empty"; fi
+
       - name: Add server to known_hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          echo "Scanning ${{ secrets.SSH_HOST }} on port ${{ secrets.SSH_PORT }}..."
+          ssh-keyscan -p ${{ secrets.SSH_PORT }} -v ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: 🔍 Debug Remote Path & Deploy
         run: |
