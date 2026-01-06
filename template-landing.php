@@ -11,22 +11,13 @@ get_header(); ?>
     <?php include get_stylesheet_directory() . '/blocks/hero/hero.php'; ?>
     
     <!-- Inscription CTA Section -->
-    <?php include get_stylesheet_directory() . '/blocks/inscription-cta/inscription-cta.php'; ?>
-    
-    <!-- Courses Grid Section -->
-    <?php include get_stylesheet_directory() . '/blocks/courses-grid/courses-grid.php'; ?>
-    
+    <?php include ACADEMIA_THEME_DIR . '/blocks/inscription-cta/inscription-cta.php'; ?>
+
+    <!-- Course Curriculum Section -->
+    <?php include ACADEMIA_THEME_DIR . '/blocks/course-curriculum/course-curriculum.php'; ?>
+
     <!-- Benefits Section -->
-    <?php include get_stylesheet_directory() . '/blocks/benefits/benefits.php'; ?>
-    
-    <!-- Metrics Section -->
-    <?php include get_stylesheet_directory() . '/blocks/metrics/metrics.php'; ?>
-    
-    <!-- FAQ Section -->
-    <?php include get_stylesheet_directory() . '/blocks/faq/faq.php'; ?>
-    
-    <!-- CTA Section -->
-    <?php include get_stylesheet_directory() . '/blocks/cta/cta.php'; ?>
+    <?php include ACADEMIA_THEME_DIR . '/blocks/benefits/benefits.php'; ?>
 </main>
 
 <?php get_footer(); ?>

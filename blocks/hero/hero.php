@@ -19,14 +19,14 @@
                 </span>
                 
                 <?php 
-                $hero_title = get_theme_mod('academia_hero_title', 'Emprende Sin Límites y Alcanza Tu Máximo Potencial');
-                $hero_description = get_theme_mod('academia_hero_description', 'Aprende de expertos y domina las habilidades más demandadas en marketing digital, emprendimiento y ventas. Transforma tu idea en un negocio exitoso sin barreras.');
-                $primary_btn_text = get_theme_mod('academia_hero_primary_btn_text', 'Explorar Cursos');
-                $primary_btn_link = get_theme_mod('academia_hero_primary_btn_link', 'https://emprendesinlimites.co/resumen-cursos/');
-                $secondary_btn_text = get_theme_mod('academia_hero_secondary_btn_text', 'Ver Demo Gratis');
-                $secondary_btn_link = get_theme_mod('academia_hero_secondary_btn_link', '#demo');
+                $hero_title = get_theme_mod('academia_hero_title', 'Crece Inteligente: Emprendimiento con Propósito y Estrategia');
+                $hero_description = get_theme_mod('academia_hero_description', 'Certificación gratuita por Escuela Plika. Formación integral para emprendedores que buscan impacto real, estrategia de negocio y crecimiento sostenible.');
+                $primary_btn_text = get_theme_mod('academia_hero_primary_btn_text', 'Inscribirme Gratis');
+                $primary_btn_link = get_theme_mod('academia_hero_primary_btn_link', 'https://docs.google.com/forms/d/e/1FAIpQLSffLNmhX5l172AwtWo_ZVty_1k_yAwnWMtErTY4ALjAVcC2Sw/viewform');
+                $secondary_btn_text = get_theme_mod('academia_hero_secondary_btn_text', 'Ver Módulos');
+                $secondary_btn_link = get_theme_mod('academia_hero_secondary_btn_link', '#curriculum');
 
-                $display_title = str_replace('Sin Límites', '<span class="gradient-text">Sin Límites</span>', esc_html($hero_title));
+                $display_title = str_replace('Inteligente', '<span class="gradient-text">Inteligente</span>', esc_html($hero_title));
                 ?>
                 <h1 class="hero-title">
                     <?php echo $display_title; ?>
@@ -50,18 +50,16 @@
                 
                 <div class="hero-stats">
                     <div class="stat-item">
-                        <div class="stat-number counter" data-target="15000">0</div>
-                        <div class="stat-label">Estudiantes Activos</div>
+                        <div class="stat-number">10</div>
+                        <div class="stat-label">Módulos de Valor</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number counter" data-target="150">0</div>
-                        <div class="stat-label">Cursos Disponibles</div>
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Gratis y Online</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">
-                            <span class="counter" data-target="98">0</span>%
-                        </div>
-                        <div class="stat-label">Satisfacción</div>
+                        <div class="stat-number">Oficial</div>
+                        <div class="stat-label">Certificación Plika</div>
                     </div>
                 </div>
             </div>

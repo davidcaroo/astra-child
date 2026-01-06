@@ -113,9 +113,9 @@
                         </defs>
                     </svg>
                 </div>
-                <h3 class="benefit-title">Proyectos Reales</h3>
+                <h3 class="benefit-title">Red de Contactos</h3>
                 <p class="benefit-description">
-                    Aplica lo aprendido en proyectos prácticos basados en casos reales de empresas líderes.
+                    Conéctate con mentores y otros emprendedores en un ecosistema de crecimiento.
                 </p>
             </div>
             
@@ -134,9 +134,9 @@
                         </defs>
                     </svg>
                 </div>
-                <h3 class="benefit-title">Soporte Continuo</h3>
+                <h3 class="benefit-title">Certificación Plika</h3>
                 <p class="benefit-description">
-                    Acceso directo a mentores y soporte técnico para resolver todas tus dudas rápidamente.
+                    Obtén un certificado oficial que respalda tus conocimientos en emprendimiento.
                 </p>
             </div>
         </div>
