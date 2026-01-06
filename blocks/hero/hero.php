@@ -62,7 +62,7 @@
                     </div>
                     <div class="stat-item">
                         <div class="stat-number">Oficial</div>
-                        <div class="stat-label">Certificación Plika</div>
+                        <div class="stat-label">Certificación Aplika</div>
                     </div>
                 </div>
             </div>
