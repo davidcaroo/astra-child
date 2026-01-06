@@ -99,7 +99,7 @@ function academia_customize_register($wp_customize) {
 
     // Hero Title
     $wp_customize->add_setting('academia_hero_title', array(
-        'default'           => 'Emprende Sin Límites y Alcanza Tu Máximo Potencial',
+        'default'           => 'Crece Inteligente: Emprendimiento con Propósito y Estrategia',
         'sanitize_callback' => 'sanitize_text_field',
     ));
 
@@ -111,19 +111,19 @@ function academia_customize_register($wp_customize) {
 
     // Hero Description
     $wp_customize->add_setting('academia_hero_description', array(
-        'default'           => 'Aprende de expertos y domina las habilidades más demandadas en marketing digital, emprendimiento y ventas. Transforma tu idea en un negocio exitoso sin barreras.',
-        'sanitize_callback' => 'sanitize_textarea_field',
+        'default'           => 'Certificación gratuita por <a href="https://escuelaplika.com/" target="_blank" class="aplika-link"><img src="' . get_stylesheet_directory_uri() . '/assets/images/aplika-logo.png" alt="Aplika" class="aplika-logo-inline"></a> Formación integral para emprendedores que buscan impacto real, estrategia de negocio y crecimiento sostenible.',
+        'sanitize_callback' => 'wp_kses_post', // Changed to allow HTML in description
     ));
 
     $wp_customize->add_control('academia_hero_description', array(
-        'label'    => __('Descripción del Hero', 'academia-pro'),
+        'label'    => __('Descripción del Hero (soporta HTML)', 'academia-pro'),
         'section'  => 'academia_hero_section',
         'type'     => 'textarea',
     ));
 
     // Hero Primary Button Text
     $wp_customize->add_setting('academia_hero_primary_btn_text', array(
-        'default'           => 'Explorar Cursos',
+        'default'           => 'Inscribirme Gratis',
         'sanitize_callback' => 'sanitize_text_field',
     ));
 
@@ -135,7 +135,7 @@ function academia_customize_register($wp_customize) {
 
     // Hero Primary Button Link
     $wp_customize->add_setting('academia_hero_primary_btn_link', array(
-        'default'           => 'https://emprendesinlimites.co/resumen-cursos/',
+        'default'           => 'https://docs.google.com/forms/d/e/1FAIpQLSffLNmhX5l172AwtWo_ZVty_1k_yAwnWMtErTY4ALjAVcC2Sw/viewform',
         'sanitize_callback' => 'esc_url_raw',
     ));
 
@@ -147,7 +147,7 @@ function academia_customize_register($wp_customize) {
 
     // Hero Secondary Button Text
     $wp_customize->add_setting('academia_hero_secondary_btn_text', array(
-        'default'           => 'Ver Demo Gratis',
+        'default'           => 'Ver Módulos',
         'sanitize_callback' => 'sanitize_text_field',
     ));
 
@@ -159,7 +159,7 @@ function academia_customize_register($wp_customize) {
 
     // Hero Secondary Button Link
     $wp_customize->add_setting('academia_hero_secondary_btn_link', array(
-        'default'           => '#demo',
+        'default'           => '#curriculum',
         'sanitize_callback' => 'esc_url_raw',
     ));
 
@@ -177,7 +177,7 @@ function academia_customize_register($wp_customize) {
 
     // CTA Title
     $wp_customize->add_setting('academia_cta_title', array(
-        'default'           => 'Comienza Tu Transformación Profesional Hoy',
+        'default'           => 'Comienza Tu Transformación con Crece Inteligente',
         'sanitize_callback' => 'sanitize_text_field',
     ));
 
@@ -189,7 +189,7 @@ function academia_customize_register($wp_customize) {
 
     // CTA Primary Button Text
     $wp_customize->add_setting('academia_cta_primary_btn_text', array(
-        'default'           => 'Inscríbete Ahora',
+        'default'           => 'Inscribirme Gratis Hoy',
         'sanitize_callback' => 'sanitize_text_field',
     ));
 
@@ -201,7 +201,7 @@ function academia_customize_register($wp_customize) {
 
     // CTA Primary Button Link
     $wp_customize->add_setting('academia_cta_primary_btn_link', array(
-        'default'           => 'https://emprendesinlimites.co/resumen-cursos/',
+        'default'           => 'https://docs.google.com/forms/d/e/1FAIpQLSffLNmhX5l172AwtWo_ZVty_1k_yAwnWMtErTY4ALjAVcC2Sw/viewform',
         'sanitize_callback' => 'esc_url_raw',
     ));
 
