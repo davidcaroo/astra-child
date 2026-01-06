@@ -20,7 +20,7 @@
                 
                 <?php 
                 $hero_title = get_theme_mod('academia_hero_title', 'Crece Inteligente: Emprendimiento con Propósito y Estrategia');
-                $hero_description = get_theme_mod('academia_hero_description', 'Certificación gratuita por <a href="https://escuelaplika.com/" target="_blank" class="aplika-link"><img src="' . get_stylesheet_directory_uri() . '/assets/images/aplika-logo.png" alt="Aplika" class="aplika-logo-inline"></a>. Formación integral para emprendedores que buscan impacto real, estrategia de negocio y crecimiento sostenible.');
+                $hero_description = get_theme_mod('academia_hero_description', 'Certificación gratuita por <a href="https://escuelaplika.com/" target="_blank" class="aplika-link"><img src="' . get_stylesheet_directory_uri() . '/assets/images/aplika-logo.png" alt="Aplika" class="aplika-logo-inline"></a> Formación integral para emprendedores que buscan impacto real, estrategia de negocio y crecimiento sostenible.');
                 $primary_btn_text = get_theme_mod('academia_hero_primary_btn_text', 'Inscribirme Gratis');
                 $primary_btn_link = get_theme_mod('academia_hero_primary_btn_link', 'https://docs.google.com/forms/d/e/1FAIpQLSffLNmhX5l172AwtWo_ZVty_1k_yAwnWMtErTY4ALjAVcC2Sw/viewform');
                 $secondary_btn_text = get_theme_mod('academia_hero_secondary_btn_text', 'Ver Módulos');
