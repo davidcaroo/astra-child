@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define theme constants
-define('ACADEMIA_VERSION', '1.0.0');
+define('ACADEMIA_VERSION', '1.0.2');
 define('ACADEMIA_THEME_DIR', get_stylesheet_directory());
 define('ACADEMIA_THEME_URI', get_stylesheet_directory_uri());
 
