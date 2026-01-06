@@ -20,7 +20,7 @@
                 
                 <?php 
                 $hero_title = get_theme_mod('academia_hero_title', 'Crece Inteligente: Emprendimiento con Propósito y Estrategia');
-                $hero_description = get_theme_mod('academia_hero_description', 'Certificación gratuita por Escuela Plika. Formación integral para emprendedores que buscan impacto real, estrategia de negocio y crecimiento sostenible.');
+                $hero_description = get_theme_mod('academia_hero_description', 'Certificación gratuita por <a href="https://escuelaplika.com/" target="_blank" class="aplika-link"><img src="' . get_stylesheet_directory_uri() . '/assets/images/aplika-logo.png" alt="Aplika" class="aplika-logo-inline"></a>. Formación integral para emprendedores que buscan impacto real, estrategia de negocio y crecimiento sostenible.');
                 $primary_btn_text = get_theme_mod('academia_hero_primary_btn_text', 'Inscribirme Gratis');
                 $primary_btn_link = get_theme_mod('academia_hero_primary_btn_link', 'https://docs.google.com/forms/d/e/1FAIpQLSffLNmhX5l172AwtWo_ZVty_1k_yAwnWMtErTY4ALjAVcC2Sw/viewform');
                 $secondary_btn_text = get_theme_mod('academia_hero_secondary_btn_text', 'Ver Módulos');
@@ -32,9 +32,12 @@
                     <?php echo $display_title; ?>
                 </h1>
                 
-                <p class="hero-description">
-                    <?php echo esc_html($hero_description); ?>
-                </p>
+                <div class="hero-description">
+                    <?php echo wp_kses($hero_description, array(
+                        'a' => array('href' => array(), 'target' => array(), 'class' => array()),
+                        'img' => array('src' => array(), 'alt' => array(), 'class' => array())
+                    )); ?>
+                </div>
                 
                 <div class="hero-cta">
                     <a href="<?php echo esc_url($primary_btn_link); ?>" class="btn btn-primary btn-lg">
@@ -183,6 +186,25 @@
     color: rgba(255, 255, 255, 0.9);
     line-height: 1.7;
     margin-bottom: var(--spacing-2xl);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.aplika-logo-inline {
+    height: 32px;
+    width: auto;
+    vertical-align: middle;
+    transition: transform 0.2s ease;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.aplika-logo-inline:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .hero-cta {

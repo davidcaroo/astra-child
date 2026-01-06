@@ -134,7 +134,7 @@
                         </defs>
                     </svg>
                 </div>
-                <h3 class="benefit-title">Certificación Plika</h3>
+                <h3 class="benefit-title"><a href="https://escuelaplika.com/" target="_blank" class="aplika-link-benefit">Certificación <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/aplika-logo.png" alt="Aplika" style="height:20px; vertical-align:middle; margin-left:5px;"></a></h3>
                 <p class="benefit-description">
                     Obtén un certificado oficial que respalda tus conocimientos en emprendimiento.
                 </p>
