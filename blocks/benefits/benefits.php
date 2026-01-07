@@ -90,9 +90,9 @@
                         </defs>
                     </svg>
                 </div>
-                <h3 class="benefit-title">Comunidad Activa</h3>
+                <h3 class="benefit-title">Acompañamiento al Emprendedor</h3>
                 <p class="benefit-description">
-                    Únete a una red de más de 15,000 estudiantes y profesionales para networking y colaboración.
+                    Recibe orientación clara y herramientas prácticas para avanzar en tu emprendimiento paso a paso, desde la idea hasta la ejecución.
                 </p>
             </div>
             
