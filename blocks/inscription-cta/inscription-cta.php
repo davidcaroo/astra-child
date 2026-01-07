@@ -2,7 +2,26 @@
 /**
  * Inscription CTA Block
  * High-impact section for Google Form registration
+ * Now fully customizable via WordPress Customizer
  */
+
+// Get Customizer values with defaults
+$show_section = get_theme_mod('academia_inscription_show', true);
+
+// Exit early if section is hidden
+if (!$show_section) {
+    return;
+}
+
+$badge_text = get_theme_mod('academia_inscription_badge', 'Primer Paso Obligatorio');
+$title = get_theme_mod('academia_inscription_title', 'Caracterización e Inscripción Académica');
+$description = get_theme_mod('academia_inscription_description', 'Antes de acceder a nuestros cursos, es fundamental realizar tu proceso de caracterización. Esto nos permite conocer tu perfil y brindarte una ruta de aprendizaje optimizada para tu éxito profesional.');
+$benefit_1 = get_theme_mod('academia_inscription_benefit_1', 'Perfilado profesional personalizado');
+$benefit_2 = get_theme_mod('academia_inscription_benefit_2', 'Acceso prioritario a nuevas convocatorias');
+$benefit_3 = get_theme_mod('academia_inscription_benefit_3', 'Asesoría inicial sin costo');
+$button_text = get_theme_mod('academia_inscription_button_text', 'Completar Inscripción Ahora');
+$button_url = get_theme_mod('academia_inscription_button_url', 'https://docs.google.com/forms/d/e/1FAIpQLSffLNmhX5l172AwtWo_ZVty_1k_yAwnWMtErTY4ALjAVcC2Sw/viewform');
+$image_url = get_theme_mod('academia_inscription_image', get_stylesheet_directory_uri() . '/assets/images/inscription-visual.png');
 ?>
 
 <section class="inscription-cta-section section">
@@ -11,48 +30,70 @@
             <div class="inscription-grid">
                 <!-- Left Column: Content -->
                 <div class="inscription-content">
-                    <span class="inscription-badge">Primer Paso Obligatorio</span>
-                    <h2 class="inscription-title">Caracterización e Inscripción Académica</h2>
-                    <p class="inscription-text">
-                        Antes de acceder a nuestros cursos, es fundamental realizar tu proceso de caracterización. Esto nos permite conocer tu perfil y brindarte una ruta de aprendizaje optimizada para tu éxito profesional.
-                    </p>
+                    <?php if (!empty($badge_text)) : ?>
+                        <span class="inscription-badge"><?php echo esc_html($badge_text); ?></span>
+                    <?php endif; ?>
                     
-                    <ul class="inscription-benefits">
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Perfilado profesional personalizado
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Acceso prioritario a nuevas convocatorias
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Asesoría inicial sin costo
-                        </li>
-                    </ul>
+                    <?php if (!empty($title)) : ?>
+                        <h2 class="inscription-title"><?php echo esc_html($title); ?></h2>
+                    <?php endif; ?>
+                    
+                    <?php if (!empty($description)) : ?>
+                        <p class="inscription-text">
+                            <?php echo esc_html($description); ?>
+                        </p>
+                    <?php endif; ?>
+                    
+                    <?php if (!empty($benefit_1) || !empty($benefit_2) || !empty($benefit_3)) : ?>
+                        <ul class="inscription-benefits">
+                            <?php if (!empty($benefit_1)) : ?>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <?php echo esc_html($benefit_1); ?>
+                                </li>
+                            <?php endif; ?>
+                            
+                            <?php if (!empty($benefit_2)) : ?>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <?php echo esc_html($benefit_2); ?>
+                                </li>
+                            <?php endif; ?>
+                            
+                            <?php if (!empty($benefit_3)) : ?>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <?php echo esc_html($benefit_3); ?>
+                                </li>
+                            <?php endif; ?>
+                        </ul>
+                    <?php endif; ?>
 
-                    <div class="inscription-actions">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSffLNmhX5l172AwtWo_ZVty_1k_yAwnWMtErTY4ALjAVcC2Sw/viewform" target="_blank" class="btn btn-primary btn-lg">
-                            Completar Inscripción Ahora
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <polyline points="12 5 19 12 12 19"></polyline>
-                            </svg>
-                        </a>
-                    </div>
+                    <?php if (!empty($button_text) && !empty($button_url)) : ?>
+                        <div class="inscription-actions">
+                            <a href="<?php echo esc_url($button_url); ?>" target="_blank" class="btn btn-primary btn-lg">
+                                <?php echo esc_html($button_text); ?>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <!-- Right Column: Visual -->
                 <div class="inscription-visual">
                     <div class="visual-wrapper">
-                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/inscription-visual.png" alt="Inscripción Premium" class="floating-image">
+                        <?php if (!empty($image_url)) : ?>
+                            <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($title); ?>" class="floating-image">
+                        <?php endif; ?>
                         <div class="visual-blur-blob"></div>
                     </div>
                 </div>

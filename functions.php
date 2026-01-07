@@ -181,6 +181,132 @@ function academia_customize_register($wp_customize) {
         'type'     => 'url',
     ));
 
+    // --- Inscription CTA Section ---
+    $wp_customize->add_section('academia_inscription_section', array(
+        'title'    => __('Sección Inscripción CTA', 'academia-pro'),
+        'priority' => 32,
+    ));
+
+    // Show/Hide Inscription Section
+    $wp_customize->add_setting('academia_inscription_show', array(
+        'default'           => true,
+        'sanitize_callback' => 'rest_sanitize_boolean',
+    ));
+
+    $wp_customize->add_control('academia_inscription_show', array(
+        'label'    => __('Mostrar Sección de Inscripción', 'academia-pro'),
+        'section'  => 'academia_inscription_section',
+        'type'     => 'checkbox',
+    ));
+
+    // Inscription Badge Text
+    $wp_customize->add_setting('academia_inscription_badge', array(
+        'default'           => 'Primer Paso Obligatorio',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_inscription_badge', array(
+        'label'    => __('Texto del Badge', 'academia-pro'),
+        'section'  => 'academia_inscription_section',
+        'type'     => 'text',
+    ));
+
+    // Inscription Title
+    $wp_customize->add_setting('academia_inscription_title', array(
+        'default'           => 'Caracterización e Inscripción Académica',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_inscription_title', array(
+        'label'    => __('Título Principal', 'academia-pro'),
+        'section'  => 'academia_inscription_section',
+        'type'     => 'text',
+    ));
+
+    // Inscription Description
+    $wp_customize->add_setting('academia_inscription_description', array(
+        'default'           => 'Antes de acceder a nuestros cursos, es fundamental realizar tu proceso de caracterización. Esto nos permite conocer tu perfil y brindarte una ruta de aprendizaje optimizada para tu éxito profesional.',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+
+    $wp_customize->add_control('academia_inscription_description', array(
+        'label'    => __('Descripción', 'academia-pro'),
+        'section'  => 'academia_inscription_section',
+        'type'     => 'textarea',
+    ));
+
+    // Benefit 1
+    $wp_customize->add_setting('academia_inscription_benefit_1', array(
+        'default'           => 'Perfilado profesional personalizado',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_inscription_benefit_1', array(
+        'label'    => __('Beneficio 1', 'academia-pro'),
+        'section'  => 'academia_inscription_section',
+        'type'     => 'text',
+    ));
+
+    // Benefit 2
+    $wp_customize->add_setting('academia_inscription_benefit_2', array(
+        'default'           => 'Acceso prioritario a nuevas convocatorias',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_inscription_benefit_2', array(
+        'label'    => __('Beneficio 2', 'academia-pro'),
+        'section'  => 'academia_inscription_section',
+        'type'     => 'text',
+    ));
+
+    // Benefit 3
+    $wp_customize->add_setting('academia_inscription_benefit_3', array(
+        'default'           => 'Asesoría inicial sin costo',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_inscription_benefit_3', array(
+        'label'    => __('Beneficio 3', 'academia-pro'),
+        'section'  => 'academia_inscription_section',
+        'type'     => 'text',
+    ));
+
+    // Button Text
+    $wp_customize->add_setting('academia_inscription_button_text', array(
+        'default'           => 'Completar Inscripción Ahora',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_inscription_button_text', array(
+        'label'    => __('Texto del Botón', 'academia-pro'),
+        'section'  => 'academia_inscription_section',
+        'type'     => 'text',
+    ));
+
+    // Button URL
+    $wp_customize->add_setting('academia_inscription_button_url', array(
+        'default'           => 'https://docs.google.com/forms/d/e/1FAIpQLSffLNmhX5l172AwtWo_ZVty_1k_yAwnWMtErTY4ALjAVcC2Sw/viewform',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('academia_inscription_button_url', array(
+        'label'    => __('URL del Botón', 'academia-pro'),
+        'section'  => 'academia_inscription_section',
+        'type'     => 'url',
+    ));
+
+    // Inscription Image
+    $wp_customize->add_setting('academia_inscription_image', array(
+        'default'           => get_stylesheet_directory_uri() . '/assets/images/inscription-visual.png',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'academia_inscription_image', array(
+        'label'    => __('Imagen de Inscripción', 'academia-pro'),
+        'section'  => 'academia_inscription_section',
+        'settings' => 'academia_inscription_image',
+    )));
+
     // --- CTA Section ---
     $wp_customize->add_section('academia_cta_section', array(
         'title'    => __('Sección CTA (Final)', 'academia-pro'),
