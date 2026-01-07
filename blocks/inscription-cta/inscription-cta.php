@@ -90,9 +90,9 @@ $image_url = get_theme_mod('academia_inscription_image', get_stylesheet_director
 
                 <!-- Right Column: Visual -->
                 <div class="inscription-visual">
-                    <div class="visual-wrapper">
+                    <div class=\"visual-wrapper\">
                         <?php if (!empty($image_url)) : ?>
-                            <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($title); ?>" class="floating-image">
+                            <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($title); ?>" class="floating-image" width="400" height="400" loading="lazy">
                         <?php endif; ?>
                         <div class="visual-blur-blob"></div>
                     </div>
