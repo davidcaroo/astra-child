@@ -15,7 +15,7 @@
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M10 2L12.5 7.5L18 8.5L14 12.5L15 18L10 15.5L5 18L6 12.5L2 8.5L7.5 7.5L10 2Z" fill="currentColor"/>
                     </svg>
-                    #1 en Emprendimiento Digital
+                    <?php echo esc_html(get_theme_mod('academia_hero_badge_text', '#1 en Emprendimiento Digital')); ?>
                 </span>
                 
                 <?php 

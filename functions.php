@@ -97,6 +97,18 @@ function academia_customize_register($wp_customize) {
         'priority' => 30,
     ));
 
+    // Hero Badge Text
+    $wp_customize->add_setting('academia_hero_badge_text', array(
+        'default'           => '#1 en Emprendimiento Digital',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('academia_hero_badge_text', array(
+        'label'    => __('Texto del Badge del Hero', 'academia-pro'),
+        'section'  => 'academia_hero_section',
+        'type'     => 'text',
+    ));
+
     // Hero Title
     $wp_customize->add_setting('academia_hero_title', array(
         'default'           => 'Crece Inteligente: Emprendimiento con Propósito y Estrategia',
