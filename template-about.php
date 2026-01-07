@@ -76,7 +76,7 @@ get_header(); ?>
                 'post_type' => 'instructor',
                 'posts_per_page' => -1,
                 'orderby' => 'date',
-                'order' => 'ASC',
+                'order' => 'DESC',
             ));
 
             if ($instructors_query->have_posts()) : ?>
