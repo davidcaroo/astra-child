@@ -361,8 +361,8 @@ function academia_customize_register($wp_customize) {
         'type'     => 'text',
     ));
 
-    // Sponsor Logos (1-5)
-    for ($i = 1; $i <= 5; $i++) {
+    // Sponsor Logos (1-10)
+    for ($i = 1; $i <= 10; $i++) {
         $wp_customize->add_setting('academia_about_sponsor_' . $i, array(
             'default'           => '',
             'sanitize_callback' => 'esc_url_raw',

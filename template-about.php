@@ -132,12 +132,12 @@ get_header(); ?>
             <h2 class="sponsors-title text-center animate-on-scroll fade-in"><?php echo esc_html($sponsors_title); ?></h2>
             <div class="sponsors-grid animate-on-scroll fade-in" style="--sponsor-logo-size: <?php echo esc_attr($sponsor_logo_size); ?>px;">
                 <?php 
-                for ($i = 1; $i <= 5; $i++) :
+                for ($i = 1; $i <= 10; $i++) :
                     $sponsor_logo = get_theme_mod('academia_about_sponsor_' . $i);
                     if ($sponsor_logo) : ?>
-                        <div class="sponsor-item">
-                            <img src="<?php echo esc_url($sponsor_logo); ?>" alt="Patrocinador <?php echo $i; ?>">
-                        </div>
+                         <div class="sponsor-item">
+                             <img src="<?php echo esc_url($sponsor_logo); ?>" alt="Patrocinador <?php echo $i; ?>">
+                         </div>
                     <?php endif;
                 endfor; 
                 ?>
