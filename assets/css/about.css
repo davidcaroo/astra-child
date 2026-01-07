@@ -88,7 +88,7 @@
     opacity: 0.3;
 }
 
-.history-text .section-badge {
+.section-badge {
     display: inline-block;
     padding: 6px 16px;
     background: rgba(0, 102, 255, 0.1);
