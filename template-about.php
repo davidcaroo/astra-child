@@ -75,7 +75,7 @@ get_header(); ?>
             $instructors_query = new WP_Query(array(
                 'post_type' => 'instructor',
                 'posts_per_page' => -1,
-                'orderby' => 'menu_order',
+                'orderby' => 'date',
                 'order' => 'ASC',
             ));
 
