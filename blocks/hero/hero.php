@@ -98,7 +98,7 @@
                     <div class="floating-card card-3">
                         <div class="card-icon">🎯</div>
                         <div class="card-text">
-                            <strong>+500 estudiantes</strong>
+                            <strong>Identidad Estratégica</strong>
                             <span>Este mes</span>
                         </div>
                     </div>
