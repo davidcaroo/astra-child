@@ -80,6 +80,12 @@ Edita `assets/css/global.css` para cambiar:
 
 ## 📝 Changelog
 
+### v1.0.2 (2026-01-07)
+- ✅ Optimizaciones de PageSpeed (lazy loading, dimensiones explícitas)
+- ✅ Sección de Inscripción completamente dinámica vía Customizer
+- ✅ Breadcrumbs ocultos en página About
+- ✅ Orden de instructores por fecha de publicación
+
 ### v1.0.0 (2026-01-03)
 - ✅ Navbar moderno con menú centrado
 - ✅ Sistema de diseño completo
