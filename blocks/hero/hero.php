@@ -88,10 +88,9 @@
                     </div>
                     
                     <div class="floating-card card-2">
-                        <div class="card-icon">✓</div>
+                        <div class="card-icon">🧠</div>
                         <div class="card-text">
-                            <strong>Ventas B2B</strong>
-                            <span>Completado</span>
+                            <strong>Mentalidad Emprendedora</strong>
                         </div>
                     </div>
                     
@@ -99,7 +98,6 @@
                         <div class="card-icon">🎯</div>
                         <div class="card-text">
                             <strong>Identidad Estratégica</strong>
-                            <span>Este mes</span>
                         </div>
                     </div>
                 </div>
