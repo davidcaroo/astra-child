@@ -21,7 +21,8 @@ body.login {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column; /* Ensure vertical stacking */
+    flex-direction: column;
+    /* Ensure vertical stacking */
     min-height: 100vh;
     font-family: var(--font-body);
 }
@@ -43,7 +44,8 @@ body.login h1 a {
     border-radius: 16px;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01) !important;
     padding: 40px !important;
-    max-width: 400px; /* Slightly wider */
+    max-width: 400px;
+    /* Slightly wider */
 }
 
 /* Labels */
@@ -52,22 +54,26 @@ body.login h1 a {
     font-weight: 500;
     color: var(--color-text);
     margin-bottom: 6px;
-    display: block; /* Ensure label is block */
+    display: block;
+    /* Ensure label is block */
 }
 
 /* Inputs */
+/* Inputs */
 .login form .input,
-.login form input[type=checkbox], 
 .login input[type=text] {
     background: #f8fafc;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
     font-size: 16px;
-    padding: 12px 16px; /* Comfortable padding */
+    padding: 12px 16px;
+    /* Comfortable padding */
     box-shadow: none;
     transition: all 0.2s ease;
-    width: 100%; /* Full width */
-    margin-bottom: 16px; /* Space between fields */
+    width: 100%;
+    /* Full width */
+    margin-bottom: 16px;
+    /* Space between fields */
     color: var(--color-text);
 }
 
@@ -76,6 +82,34 @@ body.login h1 a {
     background: #fff;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+}
+
+/* Checkbox specific styles */
+.login form input[type=checkbox] {
+    width: 20px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    margin-right: 8px !important;
+    margin-bottom: 0 !important;
+    float: none !important;
+    vertical-align: middle !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 4px !important;
+    background: #fff !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+.login form input[type=checkbox]:checked {
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+}
+
+.login .forgetmenot {
+    display: flex !important;
+    align-items: center !important;
+    margin-bottom: 20px !important;
+    float: none !important;
 }
 
 /* Button */
@@ -103,20 +137,23 @@ body.login h1 a {
 }
 
 /* Footer Links */
-.login #nav, .login #backtoblog {
+.login #nav,
+.login #backtoblog {
     text-align: center;
     padding: 0 !important;
     margin: 16px 0 0 0 !important;
 }
 
-.login #nav a, .login #backtoblog a {
+.login #nav a,
+.login #backtoblog a {
     color: var(--color-text-light) !important;
     font-size: 14px !important;
     text-decoration: none;
     transition: color 0.2s;
 }
 
-.login #nav a:hover, .login #backtoblog a:hover {
+.login #nav a:hover,
+.login #backtoblog a:hover {
     color: var(--color-primary) !important;
 }
 
@@ -131,14 +168,16 @@ body.login h1 a {
    WordPress register form structure:
    p > label > input#user_login
 */
-#registerform > p:first-child {
-    display: none; /* Safely hide the first paragraph which usually contains the username field */
+#registerform>p:first-child {
+    display: none;
+    /* Safely hide the first paragraph which usually contains the username field */
 }
 
 /* Style for new fields to match */
 .login-custom-field {
     margin-bottom: 16px;
 }
+
 .login-custom-field label {
     margin-bottom: 4px;
 }
