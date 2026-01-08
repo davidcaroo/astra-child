@@ -1212,29 +1212,56 @@ add_filter( 'gettext', 'academia_translate_sensei_buttons', 20 );
  * 10. Fixes Sensei LMS (Redirección y UI)
  */
 
-// A. Redirigir a login personalizado si intenta acceder a un curso sin sesión
+/**
+ * 10. Fixes Sensei LMS (Redirección y UI)
+ */
+
+// A. Redirigir a login personalizado SOLO si intenta ver contenido protegido (Lecciones, Quizzes)
 function esl_redirect_sensei_login() {
-    if (
-        function_exists('is_sensei') &&
-        is_sensei() &&
-        !is_user_logged_in()
-    ) {
+    // Si la función de Sensei no existe o el usuario ya está logueado, no hacer nada
+    if ( ! function_exists('is_sensei') || is_user_logged_in() ) {
+        return;
+    }
+
+    // Definir tipos de post que REQUIEREN login inmediato (contenido interno del curso)
+    $protected_types = array( 'lesson', 'sensei_quiz', 'sensei_assignment' );
+
+    // Si intenta acceder a una lección/quiz -> Redirigir al login
+    if ( is_singular( $protected_types ) ) {
         wp_redirect( wp_login_url( get_permalink() ) );
         exit;
     }
 }
 add_action('template_redirect', 'esl_redirect_sensei_login');
 
-// B. Ocultar formularios de login/registro de Sensei (Fallback CSS)
+// B. Ocultar formularios de login/registro de Sensei en la página del curso (Fallback CSS)
 function esl_hide_sensei_forms_css() {
     if ( function_exists('is_sensei') && is_sensei() && !is_user_logged_in() ) {
+        // Solo ocultar en página de curso para poner nuestro botón, o globalmente si prefieres
         echo '<style>
             .sensei-login-form,
-            .sensei-register-form,
-            .sensei-message {
+            .sensei-register-form, 
+            .sensei-message.info {
                 display: none !important;
             }
         </style>';
     }
 }
 add_action('wp_head', 'esl_hide_sensei_forms_css');
+
+// C. Agregar botón de "Iniciar Sesión" personalizado en la página del curso
+function esl_add_course_login_button() {
+    if ( is_singular('course') && ! is_user_logged_in() ) {
+        $login_url = wp_login_url( get_permalink() );
+        ?>
+        <div class="esl-course-login-cta" style="margin: 20px 0;">
+            <a href="<?php echo esc_url($login_url); ?>" class="button btn btn-primary button-primary">
+                <?php esc_html_e('Inicia Sesión para Comenzar', 'astra-child'); ?>
+            </a>
+        </div>
+        <?php
+    }
+}
+// Insertar el botón donde normalmente irían las acciones del curso
+add_action( 'sensei_single_course_content_inside_before', 'esl_add_course_login_button', 15 );
+
