@@ -867,3 +867,132 @@ function academia_register_instructors_cpt() {
     register_post_type('instructor', $args);
 }
 add_action('init', 'academia_register_instructors_cpt', 0);
+
+/**
+ * ==========================================
+ * Personalización del Login y Registro
+ * ==========================================
+ */
+
+/**
+ * 1. Cargar hoja de estilos personalizada para el login
+ */
+function academia_login_styles() {
+    wp_enqueue_style( 
+        'academia-login-style', 
+        get_stylesheet_directory_uri() . '/assets/css/login-custom.css', 
+        array(), 
+        ACADEMIA_VERSION 
+    );
+}
+add_action('login_enqueue_scripts', 'academia_login_styles');
+
+/**
+ * 2. Cambiar la URL del logo (al Home)
+ */
+function academia_login_header_url() {
+    return home_url();
+}
+add_filter('login_headerurl', 'academia_login_header_url');
+
+/**
+ * 3. Cambiar el texto del atributo 'title' del logo
+ */
+function academia_login_header_title() {
+    return get_bloginfo('name');
+}
+add_filter('login_headertext', 'academia_login_header_title');
+
+/**
+ * 4. Personalización del Formulario de Registro
+ */
+
+// A. Agregar campos personalizados
+function academia_register_form() {
+    $first_name = ( ! empty( $_POST['first_name'] ) ) ? trim( $_POST['first_name'] ) : '';
+    $last_name = ( ! empty( $_POST['last_name'] ) ) ? trim( $_POST['last_name'] ) : '';
+    ?>
+    <p class="login-custom-field">
+        <label for="first_name"><?php _e( 'Nombres', 'academia-pro' ) ?><br />
+        <input type="text" name="first_name" id="first_name" class="input" value="<?php echo esc_attr( $first_name ); ?>" size="25" required /></label>
+    </p>
+
+    <p class="login-custom-field">
+        <label for="last_name"><?php _e( 'Apellidos', 'academia-pro' ) ?><br />
+        <input type="text" name="last_name" id="last_name" class="input" value="<?php echo esc_attr( $last_name ); ?>" size="25" required /></label>
+    </p>
+
+    <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lógica para autogenerar el nombre de usuario y ocultar el campo nativo
+        var userLoginInput = document.querySelector('#user_login');
+        var userLoginLabel = document.querySelector('label[for="user_login"]');
+        
+        if (userLoginInput) {
+            // Ocultar el contenedor padre (usualmente un P) o el input mismo
+            var container = userLoginInput.closest('p');
+            if(container) {
+                container.style.display = 'none';
+            } else {
+                userLoginInput.style.display = 'none';
+                if(userLoginLabel) userLoginLabel.style.display = 'none';
+            }
+            
+            // Función para actualizar el usuario
+            function updateUserLogin() {
+                var name = document.getElementById('first_name').value.toLowerCase().replace(/[^a-z0-9]/g, '');
+                var last = document.getElementById('last_name').value.toLowerCase().replace(/[^a-z0-9]/g, '');
+                var random = Math.floor(Math.random() * 10000);
+                
+                if (name || last) {
+                    userLoginInput.value = (name + '.' + last + random).substring(0, 50);
+                }
+            }
+
+            var fName = document.getElementById('first_name');
+            var lName = document.getElementById('last_name');
+
+            if(fName) fName.addEventListener('keyup', updateUserLogin);
+            if(lName) lName.addEventListener('keyup', updateUserLogin);
+            
+            // Inicializar si ya hay valores (recarga por error)
+            updateUserLogin();
+        }
+    });
+    </script>
+    <?php
+}
+add_action( 'register_form', 'academia_register_form' );
+
+// B. Validar campos
+function academia_registration_errors( $errors, $sanitized_user_login, $user_email ) {
+    if ( empty( $_POST['first_name'] ) || ! empty( $_POST['first_name'] ) && trim( $_POST['first_name'] ) == '' ) {
+        $errors->add( 'first_name_error', __( '<strong>Error</strong>: Por favor ingresa tus Nombres.', 'academia-pro' ) );
+    }
+
+    if ( empty( $_POST['last_name'] ) || ! empty( $_POST['last_name'] ) && trim( $_POST['last_name'] ) == '' ) {
+        $errors->add( 'last_name_error', __( '<strong>Error</strong>: Por favor ingresa tus Apellidos.', 'academia-pro' ) );
+    }
+
+    return $errors;
+}
+add_filter( 'registration_errors', 'academia_registration_errors', 10, 3 );
+
+// C. Guardar campos después del registro
+function academia_user_register( $user_id ) {
+    if ( ! empty( $_POST['first_name'] ) ) {
+        update_user_meta( $user_id, 'first_name', trim( $_POST['first_name'] ) );
+    }
+    
+    if ( ! empty( $_POST['last_name'] ) ) {
+        update_user_meta( $user_id, 'last_name', trim( $_POST['last_name'] ) );
+        
+        // Actualizar el "display name" para que sea Nombre Apellido
+        $display_name = trim( $_POST['first_name'] . ' ' . $_POST['last_name'] );
+        wp_update_user( array( 
+            'ID' => $user_id, 
+            'display_name' => $display_name 
+        ) );
+    }
+}
+add_action( 'user_register', 'academia_user_register' );
