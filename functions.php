@@ -1028,5 +1028,39 @@ function academia_login_redirect( $redirect_to, $request, $user ) {
 
     return $redirect_to;
 }
-add_filter( 'login_redirect', 'academia_login_redirect', 10, 3 );
+
+/**
+ * 6. Seguridad: Bloquear acceso a wp-admin para estudiantes
+ */
+function esl_block_admin_for_students() {
+    // Si estamos en el admin y NO es una petición AJAX
+    if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+        $user = wp_get_current_user();
+
+        // Si el usuario es suscriptor (estudiante)
+        if ( in_array( 'subscriber', (array) $user->roles ) ) {
+            // Redirigir a Sensei Mis Cursos si existe, sino al home
+            if ( function_exists( 'Sensei' ) ) {
+                $my_courses_page_id = Sensei()->settings->get( 'my_course_page' );
+                $redirect_url = $my_courses_page_id ? get_permalink( $my_courses_page_id ) : home_url();
+            } else {
+                $redirect_url = home_url();
+            }
+            
+            wp_redirect( $redirect_url );
+            exit;
+        }
+    }
+}
+add_action( 'admin_init', 'esl_block_admin_for_students' );
+
+/**
+ * 7. UI: Ocultar barra de administración para estudiantes
+ */
+function esl_hide_admin_bar() {
+    if ( ! current_user_can( 'manage_options' ) && ! is_admin() ) {
+        show_admin_bar( false );
+    }
+}
+add_action( 'after_setup_theme', 'esl_hide_admin_bar' );
 
