@@ -1064,3 +1064,126 @@ function esl_hide_admin_bar() {
 }
 add_action( 'after_setup_theme', 'esl_hide_admin_bar' );
 
+/**
+ * 8. Personalización de Emails (UI/UX)
+ */
+
+// A. Función Helper para generar el HTML del email
+function academia_get_email_template($title, $message, $action_url = '', $action_text = '') {
+    $logo_url = 'https://emprendesinlimites.co/wp-content/uploads/2026/01/cropped-Logo-de-Emprende-Sin-Limites.png';
+    $site_name = get_bloginfo('name');
+    $primary_color = '#0066FF';
+    
+    // Estructura HTML Responsive
+    $html = '
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>' . esc_html($title) . '</title>
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #f4f7fa; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; margin-top: 40px; margin-bottom: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <!-- Header -->
+            <tr>
+                <td align="center" style="padding: 40px 0; background-color: #ffffff; border-bottom: 1px solid #edf2f7;">
+                    <img src="' . esc_url($logo_url) . '" alt="' . esc_attr($site_name) . '" width="200" style="display: block; width: 200px; height: auto;">
+                </td>
+            </tr>
+            
+            <!-- Content -->
+            <tr>
+                <td style="padding: 40px 40px 20px 40px;">
+                    <h1 style="color: #1a202c; font-size: 24px; font-weight: 700; margin: 0 0 20px 0; text-align: center;">' . $title . '</h1>
+                    <div style="color: #4a5568; font-size: 16px; line-height: 1.6;">
+                        ' . $message . '
+                    </div>
+                </td>
+            </tr>
+            
+            <!-- Action Button -->
+            ';
+            
+    if (!empty($action_url) && !empty($action_text)) {
+        $html .= '
+            <tr>
+                <td align="center" style="padding: 20px 40px 40px 40px;">
+                    <a href="' . esc_url($action_url) . '" style="display: inline-block; padding: 14px 30px; background-color: ' . $primary_color . '; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px; box-shadow: 0 2px 4px rgba(0, 102, 255, 0.2);">' . esc_html($action_text) . '</a>
+                </td>
+            </tr>';
+    }
+    
+    $html .= '
+            <!-- Footer -->
+            <tr>
+                <td style="background-color: #f8fafc; padding: 30px 40px; text-align: center; border-top: 1px solid #edf2f7;">
+                    <p style="margin: 0; color: #718096; font-size: 14px;">&copy; ' . date('Y') . ' ' . esc_html($site_name) . '. Todos los derechos reservados.</p>
+                    <p style="margin: 10px 0 0 0; color: #a0aec0; font-size: 12px;">Si no solicitaste este correo, puedes ignorarlo.</p>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    ';
+    
+    return $html;
+}
+
+// B. Permitir HTML en los correos
+function academia_set_html_content_type() {
+    return 'text/html';
+}
+add_filter('wp_mail_content_type', 'academia_set_html_content_type');
+
+// C. Personalizar Correo de Bienvenida (Nuevo Usuario)
+function academia_custom_new_user_email($wp_new_user_notification_email, $user, $blogname) {
+    // Generar URL para establecer contraseña
+    $key = get_password_reset_key($user);
+    if (is_wp_error($key)) {
+        return $wp_new_user_notification_email;
+    }
+    
+    // Construir URLs
+    $action_url = network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user->user_login), 'login');
+    
+    // Mensaje
+    $message = '<p>¡Hola <strong>' . esc_html($user->first_name) . '</strong>!</p>';
+    $message .= '<p>Gracias por unirte a <strong>Emprende Sin Límites</strong>. Tu cuenta ha sido creada exitosamente.</p>';
+    $message .= '<p>Para comenzar tu aprendizaje, primero necesitas establecer una contraseña segura haciendo clic en el siguiente botón:</p>';
+    
+    // Sobrescribir asunto y mensaje
+    $wp_new_user_notification_email['subject'] = 'Bienvenido a ' . $blogname . ' - Activa tu cuenta';
+    $wp_new_user_notification_email['message'] = academia_get_email_template(
+        '¡Bienvenido a Tu Futuro!', 
+        $message, 
+        $action_url, 
+        'Establecer Contraseña'
+    );
+    $wp_new_user_notification_email['headers'] = array('Content-Type: text/html; charset=UTF-8');
+    
+    return $wp_new_user_notification_email;
+}
+add_filter('wp_new_user_notification_email', 'academia_custom_new_user_email', 10, 3);
+
+// D. Personalizar Correo de Recuperación de Contraseña
+function academia_custom_retrieve_password_message($message, $key, $user_login, $user_data) {
+    // Construir URL
+    $action_url = network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_login), 'login');
+    
+    // Mensaje
+    $msg_content = '<p>Hola <strong>' . esc_html($user_data->first_name) . '</strong>,</p>';
+    $msg_content .= '<p>Hemos recibido una solicitud para restablecer la contraseña de tu cuenta en Emprende Sin Límites.</p>';
+    $msg_content .= '<p>Si fuiste tú, simplemente haz clic en el botón de abajo para crear una nueva contraseña:</p>';
+    
+    // Generar Plantilla
+    $html_message = academia_get_email_template(
+        'Recuperación de Contraseña',
+        $msg_content,
+        $action_url,
+        'Restablecer Contraseña'
+    );
+    
+    return $html_message;
+}
+add_filter('retrieve_password_message', 'academia_custom_retrieve_password_message', 10, 4);
