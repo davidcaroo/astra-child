@@ -996,3 +996,37 @@ function academia_user_register( $user_id ) {
     }
 }
 add_action( 'user_register', 'academia_user_register' );
+
+/**
+ * 5. Redirección después del Login
+ * Evitar que los estudiantes vayan al wp-admin
+ */
+function academia_login_redirect( $redirect_to, $request, $user ) {
+    // Si hay error o no hay usuario, devolver url por defecto
+    if ( isset( $user->errors ) && is_array( $user->errors ) ) {
+        return $redirect_to;
+    }
+
+    // Si es una petición válida de usuario
+    if ( $user instanceof WP_User ) {
+        // Si es administrador, dejar ir al dashboard
+        if ( user_can( $user, 'manage_options' ) ) {
+            return $redirect_to;
+        }
+
+        // Si es estudiante/suscriptor, enviar a "Mis Cursos" de Sensei
+        if ( function_exists( 'Sensei' ) ) {
+            $my_courses_page_id = Sensei()->settings->get( 'my_course_page' );
+            if ( $my_courses_page_id ) {
+                return get_permalink( $my_courses_page_id );
+            }
+        }
+        
+        // Fallback: Si no hay Sensei o página definida, ir al Home
+        return home_url();
+    }
+
+    return $redirect_to;
+}
+add_filter( 'login_redirect', 'academia_login_redirect', 10, 3 );
+
