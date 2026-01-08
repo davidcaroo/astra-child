@@ -1207,3 +1207,34 @@ function academia_translate_sensei_buttons( $text ) {
     return $text;
 }
 add_filter( 'gettext', 'academia_translate_sensei_buttons', 20 );
+
+/**
+ * 10. Fixes Sensei LMS (Redirección y UI)
+ */
+
+// A. Redirigir a login personalizado si intenta acceder a un curso sin sesión
+function esl_redirect_sensei_login() {
+    if (
+        function_exists('is_sensei') &&
+        is_sensei() &&
+        !is_user_logged_in()
+    ) {
+        wp_redirect( wp_login_url( get_permalink() ) );
+        exit;
+    }
+}
+add_action('template_redirect', 'esl_redirect_sensei_login');
+
+// B. Ocultar formularios de login/registro de Sensei (Fallback CSS)
+function esl_hide_sensei_forms_css() {
+    if ( function_exists('is_sensei') && is_sensei() && !is_user_logged_in() ) {
+        echo '<style>
+            .sensei-login-form,
+            .sensei-register-form,
+            .sensei-message {
+                display: none !important;
+            }
+        </style>';
+    }
+}
+add_action('wp_head', 'esl_hide_sensei_forms_css');
