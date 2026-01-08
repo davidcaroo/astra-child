@@ -41,18 +41,51 @@
             <div class="header-actions">
                 <?php if (is_user_logged_in()) : ?>
                     <?php $current_user = wp_get_current_user(); ?>
-                    <a href="<?php echo esc_url(get_permalink(get_option('woocommerce_myaccount_page_id'))); ?>" class="user-account">
-                        <?php echo get_avatar($current_user->ID, 32, '', '', array('class' => 'user-avatar')); ?>
-                        <span class="user-name"><?php echo esc_html($current_user->display_name); ?></span>
-                    </a>
-                    <?php if (function_exists('esl_is_sensei_active') && esl_is_sensei_active()) : ?>
-                        <a href="<?php echo esc_url(get_permalink(Sensei()->settings->get('my_course_page'))); ?>" class="btn-login">
-                            Mis Cursos
-                        </a>
-                    <?php endif; ?>
-                    <a href="<?php echo esc_url(wp_logout_url(home_url())); ?>" class="btn-login">
-                        Cerrar Sesión
-                    </a>
+                    
+                    <div class="user-profile-dropdown">
+                        <!-- Trigger -->
+                        <div class="profile-trigger">
+                            <?php echo get_avatar($current_user->ID, 35, '', '', array('class' => 'user-avatar')); ?>
+                            <span class="user-name"><?php echo esc_html($current_user->display_name); ?></span>
+                            <span class="dropdown-chevron">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <!-- Menu -->
+                        <div class="profile-menu-content">
+                            <div class="profile-header-info">
+                                <span class="profile-email"><?php echo esc_html($current_user->user_email); ?></span>
+                            </div>
+
+                            <?php if (function_exists('esl_is_sensei_active') && esl_is_sensei_active()) : ?>
+                                <a href="<?php echo esc_url(get_permalink(Sensei()->settings->get('my_course_page'))); ?>" class="profile-menu-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="margin-right: 8px;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                    </svg>
+                                    Mis Cursos
+                                </a>
+                            <?php endif; ?>
+
+                            <a href="<?php echo esc_url( wp_lostpassword_url() ); ?>" class="profile-menu-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="margin-right: 8px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                                </svg>
+                                Cambiar Contraseña
+                            </a>
+
+                            <div class="profile-menu-divider"></div>
+
+                            <a href="<?php echo esc_url(wp_logout_url(home_url())); ?>" class="profile-menu-item logout-red">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="margin-right: 8px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                                Cerrar Sesión
+                            </a>
+                        </div>
+                    </div>
                 <?php else : ?>
                     <a href="<?php echo esc_url(wp_login_url(get_permalink())); ?>" class="btn-login">Iniciar Sesión</a>
                     <a href="<?php echo esc_url(wp_registration_url()); ?>" class="btn btn-primary">Registrarse</a>
@@ -510,5 +543,112 @@ body.mobile-menu-open {
 .ast-header-break-point .site-header {
     display: block !important;
 }
-</style>
+
+/* User Dropdown Styles */
+.user-profile-dropdown {
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.profile-trigger:hover {
+    background: var(--color-gray-50);
+}
+
+.dropdown-chevron {
+    color: var(--color-gray-500);
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.user-profile-dropdown:hover .dropdown-chevron {
+    transform: rotate(180deg);
+}
+
+.profile-menu-content {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 240px;
+    background: var(--color-white);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+    padding: 8px;
+    margin-top: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1100;
+    border: 1px solid var(--color-gray-200);
+}
+
+.user-profile-dropdown:hover .profile-menu-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Bridge to prevent closing when moving mouse */
+.user-profile-dropdown::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 12px;
+}
+
+.profile-header-info {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-gray-200);
+    margin-bottom: 8px;
+}
+
+.profile-email {
+    display: block;
+    color: var(--color-gray-500);
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    color: var(--color-gray-700);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.profile-menu-item:hover {
+    background: var(--color-gray-50);
+    color: var(--color-primary);
+}
+
+.profile-menu-divider {
+    height: 1px;
+    background: var(--color-gray-200);
+    margin: 8px 0;
+}
+
+.logout-red:hover {
+    background: #FEF2F2; /* Light Red */
+    color: #DC2626 !important; /* Red */
+}
+
 
