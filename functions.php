@@ -1187,3 +1187,23 @@ function academia_custom_retrieve_password_message($message, $key, $user_login, 
     return $html_message;
 }
 add_filter('retrieve_password_message', 'academia_custom_retrieve_password_message', 10, 4);
+
+/**
+ * 9. Traducciones Sensei LMS
+ */
+function academia_translate_sensei_buttons( $text ) {
+    if ( 'Start Course' === $text ) {
+        return 'Comenzar Curso';
+    }
+    if ( 'Resume Course' === $text ) {
+        return 'Continuar Curso';
+    }
+    if ( 'Register to take this course' === $text ) {
+        return 'Regístrate para tomar este curso';
+    }
+    if ( 'Login to start this course' === $text ) {
+        return 'Inicia sesión para empezar';
+    }
+    return $text;
+}
+add_filter( 'gettext', 'academia_translate_sensei_buttons', 20 );
