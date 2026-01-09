@@ -179,7 +179,7 @@ $contact_hours = get_theme_mod('academia_footer_hours', 'Lun - Vie: 9:00 - 18:00
                 <p class="copyright">
                     &copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. Todos los derechos reservados.
                     <span class="developer-credit" style="margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--color-gray-700);">
-                        Desarrollado por <a href="https://davidcaro.pro" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); text-decoration: none; font-weight: 600;">David Caro</a>
+                        Desarrollado por <a href="https://davidcaro.vercel.app/" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); text-decoration: none; font-weight: 600;">David Caro</a>
                     </span>
                 </p>
                 <div class="footer-bottom-links">
